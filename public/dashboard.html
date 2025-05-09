@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - TravelGuide</title>
+    
+    
+    <link rel="stylesheet" href="css/style.css">
+    
+    
+    <link rel="stylesheet" href="css/animations.css">
+    
+    
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <div class="bg-animation">
+        
+        
+        
+        <div class="gradient-circle circle-1"></div>
+        <div class="gradient-circle circle-2"></div>
+    </div>
+
+    <nav class="glass-nav">
+        <div class="logo">TravelGuide</div>
+        <div class="nav-links">
+            <a href="index.html" class="nav-link"><i class="fas fa-home"></i> Home</a>
+            
+            <a href="plan-trip.html" class="nav-link"><i class="fas fa-map-marked-alt"></i> Plan Trip</a>
+            
+            
+            
+            
+            <a href="buddies.html" class="nav-link"><i class="fas fa-users"></i> Find Buddies</a>
+            <a href="reviews.html" class="nav-link"><i class="fas fa-star"></i> Reviews</a>
+        </div>
+        <div class="user-menu">
+            <div class="user-avatar">
+                <img src="assets/images/default-avatar.jpg" alt="User Avatar">
+            </div>
+            <div class="user-dropdown">
+                <a href="#"><i class="fas fa-user"></i> Profile</a>
+                <a href="#"><i class="fas fa-cog"></i> Settings</a>
+                <a href="#" id="logoutBtn"><i class="fas fa-sign-out-alt"></i> Logout</a>
+            </div>
+        </div>
+    </nav>
+
+    <main class="dashboard-container">
+        <div class="welcome-banner glass-card">
+            
+            
+            <div class="welcome-content">
+                <h1>Welcome back, <span id="userName">User</span>!</h1>
+                
+                
+                
+                <p>Ready to plan your next adventure?</p>
+                
+                
+                <a href="plan-trip.html" class="btn btn-primary">Plan New Trip</a>
+            </div>
+            <div class="welcome-illustration">
+                <img src="assets/images/dashboard-illustration.svg" alt="Dashboard Illustration">
+            </div>
+        </div>
+
+        <div class="dashboard-grid">
+            <div class="upcoming-trips glass-card">
+                <h2><i class="fas fa-calendar-alt"></i> Upcoming Trips</h2>
+                <div class="trips-list" id="upcomingTrips">
+                </div>
+            </div>
+
+            
+            
+            <div class="quick-stats glass-card">
+                
+                
+                
+                <h2><i class="fas fa-chart-line"></i> Quick Stats</h2>
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-globe-americas"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3 id="countriesCount">0</h3>
+                            <p>Countries Visited</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        
+                        
+                        <div class="stat-icon">
+                            <i class="fas fa-plane"></i>
+                        </div>
+                        
+                        
+                        <div class="stat-info">
+                            <h3 id="tripsCount">0</h3>
+                            <p>Total Trips</p>
+                        
+                        
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-user-friends"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3 id="buddiesCount">0</h3>
+                            <p>Travel Buddies</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-dollar-sign"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3 id="savingsAmount">$0</h3>
+                            <p>Total Savings</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="recommendations glass-card">
+                
+                <h2><i class="fas fa-lightbulb"></i> Recommendations</h2>
+                <div class="recommendation-slider">
+                </div>
+            </div>
+
+            <div class="recent-activities glass-card">
+                <h2><i class="fas fa-history"></i> Recent Activities</h2>
+                <div class="activities-list">
+                
+                
+                </div>
+            
+            
+            
+            </div>
+       
+        </div>
+    </main>
+
+    <script src="js/main.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/trips.js"></script>
+</body>
+</html>
