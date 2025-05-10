@@ -1,24 +1,24 @@
-const express = require('express');
-const fs = require('fs').promises;
-const path = require('path');
-const bcrypt = require('bcrypt');
-const cors = require('cors');
+import express, { json, static as  serveStatic} from 'express';
+import dotenv from "dotenv"
+import { promises as fs } from 'fs';
+import { join } from 'path';
+import { hash, compare } from 'bcrypt';
+import cors from 'cors';
+import Trip from './models/Trip.js';
+import connectDB from './db.js';
+
 const app = express();
+dotenv.config();
 
-app.use(express.json());
+
+app.use(json());
 app.use(cors());
-app.use(express.static('public')); 
+app.use(serveStatic('public')); 
 
-const dbPath = path.join(__dirname, 'user.json');
+const port = process.env.PORT || 3000;
 
-async function initializeDb() {
-    try {
-        await fs.access(dbPath);
-    } catch {
-        await fs.writeFile(dbPath, JSON.stringify([]));
-    }
-}
-initializeDb();
+//connect to database
+connectDB();
 
 app.post('/api/register', async (req, res) => {
     try {
@@ -34,7 +34,7 @@ app.post('/api/register', async (req, res) => {
             return res.status(400).json({ error: 'Email already registered' });
         }
 
-        const hashedPassword = await bcrypt.hash(password, 10);
+        const hashedPassword = await hash(password, 10);
         const newUser = {
             id: users.length + 1,
             name,
@@ -67,7 +67,7 @@ app.post('/api/login', async (req, res) => {
             return res.status(400).json({ error: 'Invalid email or password' });
         }
 
-        const isMatch = await bcrypt.compare(password, user.password);
+        const isMatch = await compare(password, user.password);
         if (!isMatch) {
             return res.status(400).json({ error: 'Invalid email or password' });
         }
@@ -83,39 +83,51 @@ app.post('/api/login', async (req, res) => {
 // save trip data to db
 app.post('/api/trip', async (req, res) => {
     try {
-        
-        res.json({ message: 'Users saved successfully' });
+        const trip = new Trip({ user: req.user.id, ...req.body });
+        await trip.save();
+        res.status(201).json({ trip, message: 'Users saved successfully' });
     } catch (error) {
         console.error(error);
         res.status(500).json({ error: 'Server error' });
     }
 });
+
 app.get('/api/trips', async (req, res) => {
     try {
-        
+    const trips = await Trip.find({ user: req.user.id });
+    res.json(trips);
     } catch (error) {
         console.error(error);
         res.status(500).json({ error: 'Server error' });
     }
 });
+
 app.patch('/api/trip/:id', async (req, res) => {
     try {
-        
+    let trip = await Trip.findOneAndUpdate(
+        { _id: req.params.id, user: req.user.id },
+        req.body,
+        { new: true }
+        );
+        if (!trip) return res.status(404).json({ error: 'Trip not found' });
+        res.json(trip);
     } catch (error) {
         console.error(error);
         res.status(500).json({ error: 'Server error' });
     }
-}
+})
+
 app.delete('/api/trip/:id', async (req, res) => {
     try {
-        
+        const trip = await Trip.findOneAndDelete({ _id: req.params.id, user: req.user.id });
+        if (!trip) return res.status(404).json({ error: 'Trip not found' });
+        res.json({ message: 'Trip deleted' });   
     } catch (error) {
         console.error(error);
         res.status(500).json({ error: 'Server error' });
     }
-}
+})
 
-
-app.listen(3000, () => {
-    console.log('Server running on http://localhost:3000');
+app.listen(port, () => {
+    console.log(`Server running on http://localhost:${port}`);
 });
