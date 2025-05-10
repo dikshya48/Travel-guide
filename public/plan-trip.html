@@ -1,889 +1,1200 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Plan Trip - TravelGuide</title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css"
+    />
     <style>
-        :root {
-            --primary-color: #4361ee;
-            --secondary-color: #3a0ca3;
-            --accent-color: #f72585;
-            --light-color: #f8f9fa;
-            --dark-color: #212529;
-            --success-color: #4cc9f0;
-            --glass-blur: 12px;
-            --glass-opacity: 0.2;
-            --transition-speed: 0.3s;
-        }
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Poppins', sans-serif;
-        }
-
-        body {
-            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
-            min-height: 100vh;
-            overflow-x: hidden;
-            color: var(--dark-color);
-            line-height: 1.6;
-        }
-
-        .bg-animation {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: -1;
-            overflow: hidden;
-        }
-
-        .gradient-circle {
-            position: absolute;
-            border-radius: 50%;
-            filter: blur(80px);
-            opacity: 0.6;
-            animation-duration: 15s;
-            animation-timing-function: ease-in-out;
-            animation-iteration-count: infinite;
-        }
-
-        .circle-1 {
-            width: 600px;
-            height: 600px;
-            background: radial-gradient(circle, var(--primary-color) 0%, transparent 70%);
-            top: -100px;
-            left: -100px;
-            animation-name: float;
-        }
-
-        .circle-3 {
-            width: 300px;
-            height: 300px;
-            background: radial-gradient(circle, var(--secondary-color) 0%, transparent 70%);
-            top: 50%;
-            right: 20%;
-            animation-name: float;
-            animation-duration: 10s;
-        }
-
-        @keyframes float {
-            0%, 100% { transform: translate(0, 0); }
-            50% { transform: translate(20px, 20px); }
-        }
-
-        .glass-nav {
-            background: rgba(255, 255, 255, var(--glass-opacity));
-            backdrop-filter: blur(var(--glass-blur));
-            padding: 1rem 2rem;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            position: fixed;
-            width: 100%;
-            top: 0;
-            z-index: 100;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-        }
-
-        .logo {
-            font-size: 1.8rem;
-            font-weight: 700;
-            background: linear-gradient(to right, var(--primary-color), var(--accent-color));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
-        .nav-links {
-            display: flex;
-            gap: 2rem;
-        }
-
-        .nav-link {
-            color: var(--dark-color);
-            text-decoration: none;
-            font-weight: 500;
-            position: relative;
-            transition: all var(--transition-speed) ease;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-
-        .nav-link:hover, .nav-link.active {
-            color: var(--primary-color);
-        }
-
-        .nav-link.active::after {
-            content: '';
-            position: absolute;
-            bottom: -5px;
-            left: 0;
-            width: 100%;
-            height: 2px;
-            background: var(--primary-color);
-            border-radius: 2px;
-        }
-
-        .user-menu {
-            position: relative;
-            cursor: pointer;
-        }
-
-        .user-avatar {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            overflow: hidden;
-        }
-
-        .user-avatar img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-
-        .user-dropdown {
-            position: absolute;
-            top: 100%;
-            right: 0;
-            background: white;
-            border-radius: 10px;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-            padding: 0.5rem 0;
-            width: 200px;
-            opacity: 0;
-            visibility: hidden;
-            transition: all var(--transition-speed) ease;
-        }
-
-        .user-menu:hover .user-dropdown {
-            opacity: 1;
-            visibility: visible;
-            transform: translateY(5px);
-        }
-
-        .user-dropdown a {
-            display: block;
-            padding: 0.5rem 1rem;
-            color: var(--dark-color);
-            text-decoration: none;
-        }
-
-        .user-dropdown a:hover {
-            background: rgba(67, 97, 238, 0.1);
-            color: var(--primary-color);
-        }
-
-        .btn {
-            padding: 0.5rem 1.2rem;
-            border-radius: 50px;
-            font-weight: 500;
-            cursor: pointer;
-            transition: all var(--transition-speed) ease;
-            border: none;
-            text-align: center;
-        }
-
-        .btn-primary {
-            background: linear-gradient(to right, var(--primary-color), var(--secondary-color));
-            color: white;
-            box-shadow: 0 4px 15px rgba(67, 97, 238, 0.3);
-        }
-
-        .btn-primary:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(67, 97, 238, 0.4);
-        }
-
-        .btn-outline {
-            background: transparent;
-            color: var(--primary-color);
-            border: 2px solid var(--primary-color);
-        }
-
-        .btn-outline:hover {
-            background: var(--primary-color);
-            color: white;
-        }
-
-        .btn:disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
-        }
-
-        .plan-trip-container {
-            padding: 6rem 2rem 2rem;
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-
-        .plan-header {
-            text-align: center;
-            padding: 2rem;
-            margin-bottom: 2rem;
-        }
-
-        .plan-header h1 {
-            font-size: 2.5rem;
-            background: linear-gradient(to right, var(--primary-color), var(--accent-color));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
-        .glass-card {
-            background: rgba(255, 255, 255, var(--glass-opacity));
-            backdrop-filter: blur(var(--glass-blur));
-            border-radius: 20px;
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
-            padding: 2rem;
-            transition: all var(--transition-speed) ease;
-        }
-
-        .glass-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15);
-        }
-
-        .step-progress {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 2rem;
-            position: relative;
-        }
-
-        .step-progress::before {
-            content: '';
-            position: absolute;
-            top: 20px;
-            left: 0;
-            width: 100%;
-            height: 4px;
-            background: #ddd;
-            z-index: -1;
-        }
-
-        .step {
-            text-align: center;
-            flex: 1;
-            position: relative;
-        }
-
-        .step-number {
-            width: 40px;
-            height: 40px;
-            background: #ddd;
-            color: #fff;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin: 0 auto 0.5rem;
-            transition: all var(--transition-speed) ease;
-        }
-
-        .step.active .step-number {
-            background: var(--primary-color);
-        }
-
-        .step-label {
-            font-size: 0.9rem;
-            color: var(--dark-color);
-        }
-
-        .trip-form {
-            max-width: 800px;
-            margin: 0 auto;
-        }
-
-        .form-step {
-            display: none;
-        }
-
-        .form-step.active {
-            display: block;
-            animation: slideIn 0.5s ease;
-        }
-
-        @keyframes slideIn {
-            from { opacity: 0; transform: translateX(20px); }
-            to { opacity: 1; transform: translateX(0); }
-        }
-
-        .form-group {
-            margin-bottom: 1.5rem;
-        }
-
-        .form-group label {
-            display: block;
-            margin-bottom: 0.5rem;
-            font-weight: 500;
-        }
-
-        .input-with-icon {
-            position: relative;
-        }
-
-        .input-with-icon i {
-            position: absolute;
-            left: 1rem;
-            top: 50%;
-            transform: translateY(-50%);
-            color: var(--primary-color);
-        }
-
-        .input-with-icon input {
-            width: 100%;
-            padding: 0.8rem 1rem 0.8rem 2.5rem;
-            border-radius: 50px;
-            border: 1px solid #ddd;
-            outline: none;
-            transition: all var(--transition-speed) ease;
-        }
-
-        .input-with-icon input:focus {
-            border-color: var(--primary-color);
-            box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.2);
-        }
-
-        .autocomplete-suggestions {
-            position: absolute;
-            width: 100%;
-            background: white;
-            border-radius: 10px;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-            max-height: 200px;
-            overflow-y: auto;
-            z-index: 10;
-            margin-top: 0.5rem;
-        }
-
-        .suggestion-item {
-            padding: 0.8rem 1rem;
-            cursor: pointer;
-            transition: all var(--transition-speed) ease;
-        }
-
-        .suggestion-item:hover {
-            background: rgba(67, 97, 238, 0.1);
-            color: var(--primary-color);
-        }
-
-        .duration-display {
-            font-size: 1.2rem;
-            color: var(--primary-color);
-        }
-
-        .budget-slider-container {
-            padding: 1rem 0;
-        }
-
-        .budget-labels {
-            display: flex;
-            justify-content: space-between;
-            margin-top: 0.5rem;
-        }
-
-        #budgetValue {
-            font-weight: 600;
-            color: var(--primary-color);
-        }
-
-        .budget-categories {
-            display: flex;
-            gap: 1rem;
-            margin-top: 1rem;
-        }
-
-        .budget-category {
-            flex: 1;
-            text-align: center;
-            padding: 0.5rem;
-            border-radius: 10px;
-            background: rgba(255, 255, 255, 0.5);
-            cursor: pointer;
-            transition: all var(--transition-speed) ease;
-        }
-
-        .budget-category.active {
-            background: var(--primary-color);
-            color: white;
-        }
-
-        .preference-options {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-            gap: 1rem;
-        }
-
-        .preference-card {
-            background: white;
-            border-radius: 10px;
-            padding: 1rem;
-            text-align: center;
-            cursor: pointer;
-            transition: all var(--transition-speed) ease;
-        }
-
-        .preference-card:hover, .preference-card.active {
-            background: var(--primary-color);
-            color: white;
-        }
-
-        .preference-card i {
-            font-size: 2rem;
-            margin-bottom: 0.5rem;
-        }
-
-        .interest-tags {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 0.5rem;
-        }
-
-        .interest-tag {
-            padding: 0.5rem 1rem;
-            background: #eee;
-            border-radius: 20px;
-            cursor: pointer;
-            transition: all var(--transition-speed) ease;
-        }
-
-        .interest-tag.active {
-            background: var(--primary-color);
-            color: white;
-        }
-
-        .trip-summary {
-            padding: 1.5rem;
-        }
-
-        .summary-item {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-            margin-bottom: 1rem;
-        }
-
-        .summary-item i {
-            font-size: 1.5rem;
-            color: var(--primary-color);
-        }
-
-        .form-actions {
-            display: flex;
-            justify-content: space-between;
-            margin-top: 2rem;
-        }
+      :root {
+        --primary-color: #4361ee;
+        --secondary-color: #3a0ca3;
+        --accent-color: #f72585;
+        --light-color: #f8f9fa;
+        --dark-color: #212529;
+        --success-color: #4cc9f0;
+        --glass-blur: 12px;
+        --glass-opacity: 0.2;
+        --transition-speed: 0.3s;
+      }
+
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: "Poppins", sans-serif;
+      }
+
+      body {
+        background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+        min-height: 100vh;
+        overflow-x: hidden;
+        color: var(--dark-color);
+        line-height: 1.6;
+      }
+
+      .bg-animation {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: -1;
+        overflow: hidden;
+      }
+
+      .gradient-circle {
+        position: absolute;
+        border-radius: 50%;
+        filter: blur(80px);
+        opacity: 0.6;
+        animation-duration: 15s;
+        animation-timing-function: ease-in-out;
+        animation-iteration-count: infinite;
+      }
+
+      .circle-1 {
+        width: 600px;
+        height: 600px;
+        background: radial-gradient(
+          circle,
+          var(--primary-color) 0%,
+          transparent 70%
+        );
+        top: -100px;
+        left: -100px;
+        animation-name: float;
+      }
+
+      .circle-3 {
+        width: 300px;
+        height: 300px;
+        background: radial-gradient(
+          circle,
+          var(--secondary-color) 0%,
+          transparent 70%
+        );
+        top: 50%;
+        right: 20%;
+        animation-name: float;
+        animation-duration: 10s;
+      }
+
+      @keyframes float {
+        0%,
+        100% {
+          transform: translate(0, 0);
+        }
+        50% {
+          transform: translate(20px, 20px);
+        }
+      }
+
+      .glass-nav {
+        background: rgba(255, 255, 255, var(--glass-opacity));
+        backdrop-filter: blur(var(--glass-blur));
+        padding: 1rem 2rem;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        position: fixed;
+        width: 100%;
+        top: 0;
+        z-index: 100;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      }
+
+      .logo {
+        font-size: 1.8rem;
+        font-weight: 700;
+        background: linear-gradient(
+          to right,
+          var(--primary-color),
+          var(--accent-color)
+        );
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+      }
+
+      .nav-links {
+        display: flex;
+        gap: 2rem;
+      }
+
+      .nav-link {
+        color: var(--dark-color);
+        text-decoration: none;
+        font-weight: 500;
+        position: relative;
+        transition: all var(--transition-speed) ease;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+      }
+
+      .nav-link:hover,
+      .nav-link.active {
+        color: var(--primary-color);
+      }
+
+      .nav-link.active::after {
+        content: "";
+        position: absolute;
+        bottom: -5px;
+        left: 0;
+        width: 100%;
+        height: 2px;
+        background: var(--primary-color);
+        border-radius: 2px;
+      }
+
+      .user-menu {
+        position: relative;
+        cursor: pointer;
+      }
+
+      .user-avatar {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        overflow: hidden;
+      }
+
+      .user-avatar img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+
+      .user-dropdown {
+        position: absolute;
+        top: 100%;
+        right: 0;
+        background: white;
+        border-radius: 10px;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        padding: 0.5rem 0;
+        width: 200px;
+        opacity: 0;
+        visibility: hidden;
+        transition: all var(--transition-speed) ease;
+      }
+
+      .user-menu:hover .user-dropdown {
+        opacity: 1;
+        visibility: visible;
+        transform: translateY(5px);
+      }
+
+      .user-dropdown a {
+        display: block;
+        padding: 0.5rem 1rem;
+        color: var(--dark-color);
+        text-decoration: none;
+      }
+
+      .user-dropdown a:hover {
+        background: rgba(67, 97, 238, 0.1);
+        color: var(--primary-color);
+      }
+
+      .btn {
+        padding: 0.5rem 1.2rem;
+        border-radius: 50px;
+        font-weight: 500;
+        cursor: pointer;
+        transition: all var(--transition-speed) ease;
+        border: none;
+        text-align: center;
+      }
+
+      .btn-primary {
+        background: linear-gradient(
+          to right,
+          var(--primary-color),
+          var(--secondary-color)
+        );
+        color: white;
+        box-shadow: 0 4px 15px rgba(67, 97, 238, 0.3);
+      }
+
+      .btn-primary:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(67, 97, 238, 0.4);
+      }
+
+      .btn-outline {
+        background: transparent;
+        color: var(--primary-color);
+        border: 2px solid var(--primary-color);
+      }
+
+      .btn-outline:hover {
+        background: var(--primary-color);
+        color: white;
+      }
+
+      .btn:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+      }
+
+      .plan-trip-container {
+        padding: 6rem 2rem 2rem;
+        max-width: 1200px;
+        margin: 0 auto;
+      }
+
+      .plan-header {
+        text-align: center;
+        padding: 2rem;
+        margin-bottom: 2rem;
+      }
+
+      .plan-header h1 {
+        font-size: 2.5rem;
+        background: linear-gradient(
+          to right,
+          var(--primary-color),
+          var(--accent-color)
+        );
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+      }
+
+      .glass-card {
+        background: rgba(255, 255, 255, var(--glass-opacity));
+        backdrop-filter: blur(var(--glass-blur));
+        border-radius: 20px;
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+        padding: 2rem;
+        transition: all var(--transition-speed) ease;
+      }
+
+      .glass-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15);
+      }
+
+      .step-progress {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 2rem;
+        position: relative;
+      }
+
+      .step-progress::before {
+        content: "";
+        position: absolute;
+        top: 20px;
+        left: 0;
+        width: 100%;
+        height: 4px;
+        background: #ddd;
+        z-index: -1;
+      }
+
+      .step {
+        text-align: center;
+        flex: 1;
+        position: relative;
+      }
+
+      .step-number {
+        width: 40px;
+        height: 40px;
+        background: #ddd;
+        color: #fff;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 0.5rem;
+        transition: all var(--transition-speed) ease;
+      }
+
+      .step.active .step-number {
+        background: var(--primary-color);
+      }
+
+      .step-label {
+        font-size: 0.9rem;
+        color: var(--dark-color);
+      }
+
+      .trip-form {
+        max-width: 800px;
+        margin: 0 auto;
+      }
+
+      .form-step {
+        display: none;
+      }
+
+      .form-step.active {
+        display: block;
+        animation: slideIn 0.5s ease;
+      }
+
+      @keyframes slideIn {
+        from {
+          opacity: 0;
+          transform: translateX(20px);
+        }
+        to {
+          opacity: 1;
+          transform: translateX(0);
+        }
+      }
+
+      .form-group {
+        margin-bottom: 1.5rem;
+      }
+
+      .form-group label {
+        display: block;
+        margin-bottom: 0.5rem;
+        font-weight: 500;
+      }
+
+      .input-with-icon {
+        position: relative;
+      }
+
+      .input-with-icon i {
+        position: absolute;
+        left: 1rem;
+        top: 50%;
+        transform: translateY(-50%);
+        color: var(--primary-color);
+      }
+
+      .input-with-icon input {
+        width: 100%;
+        padding: 0.8rem 1rem 0.8rem 2.5rem;
+        border-radius: 50px;
+        border: 1px solid #ddd;
+        outline: none;
+        transition: all var(--transition-speed) ease;
+      }
+
+      .input-with-icon input:focus {
+        border-color: var(--primary-color);
+        box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.2);
+      }
+
+      .autocomplete-suggestions {
+        position: absolute;
+        width: 100%;
+        background: white;
+        border-radius: 10px;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        max-height: 200px;
+        overflow-y: auto;
+        z-index: 10;
+        margin-top: 0.5rem;
+      }
+
+      .suggestion-item {
+        padding: 0.8rem 1rem;
+        cursor: pointer;
+        transition: all var(--transition-speed) ease;
+      }
+
+      .suggestion-item:hover {
+        background: rgba(67, 97, 238, 0.1);
+        color: var(--primary-color);
+      }
+
+      .duration-display {
+        font-size: 1.2rem;
+        color: var(--primary-color);
+      }
+
+      .budget-slider-container {
+        padding: 1rem 0;
+      }
+
+      .budget-labels {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 0.5rem;
+      }
+
+      #budgetValue {
+        font-weight: 600;
+        color: var(--primary-color);
+      }
+
+      .budget-categories {
+        display: flex;
+        gap: 1rem;
+        margin-top: 1rem;
+      }
+
+      .budget-category {
+        flex: 1;
+        text-align: center;
+        padding: 0.5rem;
+        border-radius: 10px;
+        background: rgba(255, 255, 255, 0.5);
+        cursor: pointer;
+        transition: all var(--transition-speed) ease;
+      }
+
+      .budget-category.active {
+        background: var(--primary-color);
+        color: white;
+      }
+
+      .preference-options {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+        gap: 1rem;
+      }
+
+      .preference-card {
+        background: white;
+        border-radius: 10px;
+        padding: 1rem;
+        text-align: center;
+        cursor: pointer;
+        transition: all var(--transition-speed) ease;
+      }
+
+      .preference-card:hover,
+      .preference-card.active {
+        background: var(--primary-color);
+        color: white;
+      }
+
+      .preference-card i {
+        font-size: 2rem;
+        margin-bottom: 0.5rem;
+      }
+
+      .interest-tags {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+      }
+
+      .interest-tag {
+        padding: 0.5rem 1rem;
+        background: #eee;
+        border-radius: 20px;
+        cursor: pointer;
+        transition: all var(--transition-speed) ease;
+      }
+
+      .interest-tag.active {
+        background: var(--primary-color);
+        color: white;
+      }
+
+      .trip-summary {
+        padding: 1.5rem;
+      }
+
+      .summary-item {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        margin-bottom: 1rem;
+      }
+
+      .summary-item i {
+        font-size: 1.5rem;
+        color: var(--primary-color);
+      }
+
+      .form-actions {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 2rem;
+      }
     </style>
-</head>
-<body>
+    <script type="module">
+      import { checkTokenValidity } from "../utils.js";
+      checkTokenValidity();
+    </script>
+  </head>
+  <body>
     <div class="bg-animation">
-        <div class="gradient-circle circle-1"></div>
-        <div class="gradient-circle circle-3"></div>
+      <div class="gradient-circle circle-1"></div>
+      <div class="gradient-circle circle-3"></div>
     </div>
 
     <nav class="glass-nav">
-        <div class="logo">TravelGuide</div>
-        <div class="nav-links">
-            <a href="index.html" class="nav-link"><i class="fas fa-home"></i> Home</a>
-            <a href="plan-trip.html" class="nav-link active"><i class="fas fa-map-marked-alt"></i> Plan Trip</a>
-            <a href="buddies.html" class="nav-link"><i class="fas fa-users"></i> Find Buddies</a>
-            <a href="reviews.html" class="nav-link"><i class="fas fa-star"></i> Reviews</a>
+      <div class="logo">TravelGuide</div>
+      <div class="nav-links">
+        <a href="index.html" class="nav-link"
+          ><i class="fas fa-home"></i> Home</a
+        >
+        <a href="plan-trip.html" class="nav-link active"
+          ><i class="fas fa-map-marked-alt"></i> Plan Trip</a
+        >
+        <a href="buddies.html" class="nav-link"
+          ><i class="fas fa-users"></i> Find Buddies</a
+        >
+        <!-- <a href="reviews.html" class="nav-link"><i class="fas fa-star"></i> Reviews</a> -->
+      </div>
+      <div class="user-menu">
+        <div class="user-avatar">
+          <img src="https://via.placeholder.com/40" alt="User Avatar" />
         </div>
-        <div class="user-menu">
-            <div class="user-avatar">
-                <img src="https://via.placeholder.com/40" alt="User Avatar">
-            </div>
-            <div class="user-dropdown">
-                <a href="dashboard.html"><i class="fas fa-tachometer-alt"></i> Dashboard</a>
-                <a href="#"><i class="fas fa-user"></i> Profile</a>
-                <a href="#" id="logoutBtn"><i class="fas fa-sign-out-alt"></i> Logout</a>
-            </div>
+        <div class="user-dropdown">
+          <a href="dashboard.html"
+            ><i class="fas fa-tachometer-alt"></i> Dashboard</a
+          >
+          <a href="#"><i class="fas fa-user"></i> Profile</a>
+          <a href="#" id="logoutBtn"
+            ><i class="fas fa-sign-out-alt"></i> Logout</a
+          >
         </div>
+      </div>
     </nav>
 
     <main class="plan-trip-container">
-        <div class="plan-header glass-card">
-            <h1><i class="fas fa-plane"></i> Plan Your Perfect Trip</h1>
-            <p>Let our AI create a customized itinerary based on your preferences</p>
+      <div class="plan-header glass-card">
+        <h1><i class="fas fa-plane"></i> Plan Your Perfect Trip</h1>
+        <p>
+          Let our AI create a customized itinerary based on your preferences
+        </p>
+      </div>
+
+      <div class="plan-steps">
+        <div class="step-progress">
+          <div class="step active" data-step="1">
+            <div class="step-number">1</div>
+            <div class="step-label">Destination</div>
+          </div>
+          <div class="step" data-step="2">
+            <div class="step-number">2</div>
+            <div class="step-label">Dates</div>
+          </div>
+          <div class="step" data-step="3">
+            <div class="step-number">3</div>
+            <div class="step-label">Budget</div>
+          </div>
+          <div class="step" data-step="4">
+            <div class="step-number">4</div>
+            <div class="step-label">Preferences</div>
+          </div>
+          <div class="step" data-step="5">
+            <div class="step-number">5</div>
+            <div class="step-label">Review</div>
+          </div>
+        </div>
+      </div>
+
+      <form id="tripForm" class="trip-form glass-card">
+        <div class="form-step active" data-step="1">
+          <h2>
+            <i class="fas fa-map-marker-alt"></i> Where do you want to go?
+          </h2>
+          <div class="form-group">
+            <label for="destination">Destination</label>
+            <div class="input-with-icon">
+              <i class="fas fa-search"></i>
+              <input
+                type="text"
+                id="destination"
+                placeholder="Search for a country"
+                required
+              />
+              <div
+                class="autocomplete-suggestions"
+                id="autocompleteSuggestions"
+              ></div>
+            </div>
+          </div>
+          <div class="form-actions">
+            <button type="button" class="btn btn-outline" disabled>
+              Previous
+            </button>
+            <button type="button" class="btn btn-primary next-step">
+              Next
+            </button>
+          </div>
         </div>
 
-        <div class="plan-steps">
-            <div class="step-progress">
-                <div class="step active" data-step="1">
-                    <div class="step-number">1</div>
-                    <div class="step-label">Destination</div>
-                </div>
-                <div class="step" data-step="2">
-                    <div class="step-number">2</div>
-                    <div class="step-label">Dates</div>
-                </div>
-                <div class="step" data-step="3">
-                    <div class="step-number">3</div>
-                    <div class="step-label">Budget</div>
-                </div>
-                <div class="step" data-step="4">
-                    <div class="step-number">4</div>
-                    <div class="step-label">Preferences</div>
-                </div>
-                <div class="step" data-step="5">
-                    <div class="step-number">5</div>
-                    <div class="step-label">Review</div>
-                </div>
+        <div class="form-step" data-step="2">
+          <h2><i class="fas fa-calendar-alt"></i> When are you traveling?</h2>
+          <div class="form-group">
+            <label for="tripDates">Select Dates</label>
+            <div class="input-with-icon">
+              <i class="fas fa-calendar-day"></i>
+              <input
+                type="text"
+                id="tripDates"
+                placeholder="Select your travel dates"
+                required
+              />
             </div>
+          </div>
+          <div class="form-group">
+            <label>Trip Duration</label>
+            <div class="duration-display" id="durationDisplay">0 days</div>
+          </div>
+          <div class="form-actions">
+            <button type="button" class="btn btn-outline prev-step">
+              Previous
+            </button>
+            <button type="button" class="btn btn-primary next-step">
+              Next
+            </button>
+          </div>
         </div>
 
-        <form id="tripForm" class="trip-form glass-card">
-            <div class="form-step active" data-step="1">
-                <h2><i class="fas fa-map-marker-alt"></i> Where do you want to go?</h2>
-                <div class="form-group">
-                    <label for="destination">Destination</label>
-                    <div class="input-with-icon">
-                        <i class="fas fa-search"></i>
-                        <input type="text" id="destination" placeholder="Search for a country" required>
-                        <div class="autocomplete-suggestions" id="autocompleteSuggestions"></div>
-                    </div>
+        <div class="form-step" data-step="3">
+          <h2><i class="fas fa-wallet"></i> What's your budget?</h2>
+          <div class="form-group">
+            <label for="budgetRange">Budget Range (per person)</label>
+            <div class="budget-slider-container">
+              <input
+                type="range"
+                id="budgetRange"
+                min="500"
+                max="10000"
+                step="100"
+                value="2000"
+              />
+              <div class="budget-labels">
+                <span>$500</span>
+                <span id="budgetValue">$2000</span>
+                <span>$10,000+</span>
+              </div>
+              <div class="budget-categories">
+                <div class="budget-category" data-value="500-1500">
+                  <i class="fas fa-campground"></i>
+                  <span>Budget</span>
                 </div>
-                <div class="form-actions">
-                    <button type="button" class="btn btn-outline" disabled>Previous</button>
-                    <button type="button" class="btn btn-primary next-step">Next</button>
+                <div class="budget-category" data-value="1500-3000">
+                  <i class="fas fa-hotel"></i>
+                  <span>Mid-range</span>
                 </div>
+                <div class="budget-category" data-value="3000-10000">
+                  <i class="fas fa-gem"></i>
+                  <span>Luxury</span>
+                </div>
+              </div>
             </div>
+          </div>
+          <div class="form-actions">
+            <button type="button" class="btn btn-outline prev-step">
+              Previous
+            </button>
+            <button type="button" class="btn btn-primary next-step">
+              Next
+            </button>
+          </div>
+        </div>
 
-            <div class="form-step" data-step="2">
-                <h2><i class="fas fa-calendar-alt"></i> When are you traveling?</h2>
-                <div class="form-group">
-                    <label for="tripDates">Select Dates</label>
-                    <div class="input-with-icon">
-                        <i class="fas fa-calendar-day"></i>
-                        <input type="text" id="tripDates" placeholder="Select your travel dates" required>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label>Trip Duration</label>
-                    <div class="duration-display" id="durationDisplay">0 days</div>
-                </div>
-                <div class="form-actions">
-                    <button type="button" class="btn btn-outline prev-step">Previous</button>
-                    <button type="button" class="btn btn-primary next-step">Next</button>
-                </div>
+        <div class="form-step" data-step="4">
+          <h2>
+            <i class="fas fa-heart"></i> What are your travel preferences?
+          </h2>
+          <div class="form-group">
+            <label>Travel Style</label>
+            <div class="preference-options">
+              <div class="preference-card" data-style="adventure">
+                <i class="fas fa-hiking"></i>
+                <h3>Adventure</h3>
+                <p>Hiking, sports, outdoor activities</p>
+              </div>
+              <div class="preference-card" data-style="relaxation">
+                <i class="fas fa-umbrella-beach"></i>
+                <h3>Relaxation</h3>
+                <p>Beaches, spas, leisure</p>
+              </div>
+              <div class="preference-card" data-style="cultural">
+                <i class="fas fa-landmark"></i>
+                <h3>Cultural</h3>
+                <p>Museums, history, local experiences</p>
+              </div>
+              <div class="preference-card" data-style="food">
+                <i class="fas fa-utensils"></i>
+                <h3>Food & Drink</h3>
+                <p>Local cuisine, wine tasting</p>
+              </div>
             </div>
+          </div>
+          <div class="form-group">
+            <label>Interests (Select up to 3)</label>
+            <div class="interest-tags">
+              <div class="interest-tag" data-interest="photography">
+                Photography
+              </div>
+              <div class="interest-tag" data-interest="shopping">Shopping</div>
+              <div class="interest-tag" data-interest="nature">Nature</div>
+              <div class="interest-tag" data-interest="architecture">
+                Architecture
+              </div>
+              <div class="interest-tag" data-interest="nightlife">
+                Nightlife
+              </div>
+              <div class="interest-tag" data-interest="family">
+                Family-friendly
+              </div>
+              <div class="interest-tag" data-interest="romantic">Romantic</div>
+              <div class="interest-tag" data-interest="wildlife">Wildlife</div>
+            </div>
+          </div>
+          <div class="form-actions">
+            <button type="button" class="btn btn-outline prev-step">
+              Previous
+            </button>
+            <button type="button" class="btn btn-primary next-step">
+              Next
+            </button>
+          </div>
+        </div>
 
-            <div class="form-step" data-step="3">
-                <h2><i class="fas fa-wallet"></i> What's your budget?</h2>
-                <div class="form-group">
-                    <label for="budgetRange">Budget Range (per person)</label>
-                    <div class="budget-slider-container">
-                        <input type="range" id="budgetRange" min="500" max="10000" step="100" value="2000">
-                        <div class="budget-labels">
-                            <span>$500</span>
-                            <span id="budgetValue">$2000</span>
-                            <span>$10,000+</span>
-                        </div>
-                        <div class="budget-categories">
-                            <div class="budget-category" data-value="500-1500">
-                                <i class="fas fa-campground"></i>
-                                <span>Budget</span>
-                            </div>
-                            <div class="budget-category" data-value="1500-3000">
-                                <i class="fas fa-hotel"></i>
-                                <span>Mid-range</span>
-                            </div>
-                            <div class="budget-category" data-value="3000-10000">
-                                <i class="fas fa-gem"></i>
-                                <span>Luxury</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="form-actions">
-                    <button type="button" class="btn btn-outline prev-step">Previous</button>
-                    <button type="button" class="btn btn-primary next-step">Next</button>
-                </div>
+        <div class="form-step" data-step="5">
+          <h2><i class="fas fa-check-circle"></i> Review Your Trip Details</h2>
+          <div class="trip-summary glass-card">
+            <div class="summary-item">
+              <i class="fas fa-map-marker-alt"></i>
+              <div>
+                <h3>Destination</h3>
+                <p id="summaryDestination">Not selected</p>
+              </div>
             </div>
-
-            <div class="form-step" data-step="4">
-                <h2><i class="fas fa-heart"></i> What are your travel preferences?</h2>
-                <div class="form-group">
-                    <label>Travel Style</label>
-                    <div class="preference-options">
-                        <div class="preference-card" data-style="adventure">
-                            <i class="fas fa-hiking"></i>
-                            <h3>Adventure</h3>
-                            <p>Hiking, sports, outdoor activities</p>
-                        </div>
-                        <div class="preference-card" data-style="relaxation">
-                            <i class="fas fa-umbrella-beach"></i>
-                            <h3>Relaxation</h3>
-                            <p>Beaches, spas, leisure</p>
-                        </div>
-                        <div class="preference-card" data-style="cultural">
-                            <i class="fas fa-landmark"></i>
-                            <h3>Cultural</h3>
-                            <p>Museums, history, local experiences</p>
-                        </div>
-                        <div class="preference-card" data-style="food">
-                            <i class="fas fa-utensils"></i>
-                            <h3>Food & Drink</h3>
-                            <p>Local cuisine, wine tasting</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label>Interests (Select up to 3)</label>
-                    <div class="interest-tags">
-                        <div class="interest-tag" data-interest="photography">Photography</div>
-                        <div class="interest-tag" data-interest="shopping">Shopping</div>
-                        <div class="interest-tag" data-interest="nature">Nature</div>
-                        <div class="interest-tag" data-interest="architecture">Architecture</div>
-                        <div class="interest-tag" data-interest="nightlife">Nightlife</div>
-                        <div class="interest-tag" data-interest="family">Family-friendly</div>
-                        <div class="interest-tag" data-interest="romantic">Romantic</div>
-                        <div class="interest-tag" data-interest="wildlife">Wildlife</div>
-                    </div>
-                </div>
-                <div class="form-actions">
-                    <button type="button" class="btn btn-outline prev-step">Previous</button>
-                    <button type="button" class="btn btn-primary next-step">Next</button>
-                </div>
+            <div class="summary-item">
+              <i class="fas fa-calendar-alt"></i>
+              <div>
+                <h3>Dates</h3>
+                <p id="summaryDates">Not selected</p>
+              </div>
             </div>
-
-            <div class="form-step" data-step="5">
-                <h2><i class="fas fa-check-circle"></i> Review Your Trip Details</h2>
-                <div class="trip-summary glass-card">
-                    <div class="summary-item">
-                        <i class="fas fa-map-marker-alt"></i>
-                        <div>
-                            <h3>Destination</h3>
-                            <p id="summaryDestination">Not selected</p>
-                        </div>
-                    </div>
-                    <div class="summary-item">
-                        <i class="fas fa-calendar-alt"></i>
-                        <div>
-                            <h3>Dates</h3>
-                            <p id="summaryDates">Not selected</p>
-                        </div>
-                    </div>
-                    <div class="summary-item">
-                        <i class="fas fa-wallet"></i>
-                        <div>
-                            <h3>Budget</h3>
-                            <p id="summaryBudget">Not selected</p>
-                        </div>
-                    </div>
-                    <div class="summary-item">
-                        <i class="fas fa-heart"></i>
-                        <div>
-                            <h3>Travel Style</h3>
-                            <p id="summaryStyle">Not selected</p>
-                        </div>
-                    </div>
-                    <div class="summary-item">
-                        <i class="fas fa-tags"></i>
-                        <div>
-                            <h3>Interests</h3>
-                            <p id="summaryInterests">Not selected</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label for="tripName">Name Your Trip</label>
-                    <input type="text" id="tripName" placeholder="e.g., Summer Vacation 2023" required>
-                </div>
-                <div class="form-actions">
-                    <button type="button" class="btn btn-outline prev-step">Previous</button>
-                    <button type="submit" class="btn btn-primary">Generate Itinerary</button>
-                </div>
+            <div class="summary-item">
+              <i class="fas fa-wallet"></i>
+              <div>
+                <h3>Budget</h3>
+                <p id="summaryBudget">Not selected</p>
+              </div>
             </div>
-        </form>
+            <div class="summary-item">
+              <i class="fas fa-heart"></i>
+              <div>
+                <h3>Travel Style</h3>
+                <p id="summaryStyle">Not selected</p>
+              </div>
+            </div>
+            <div class="summary-item">
+              <i class="fas fa-tags"></i>
+              <div>
+                <h3>Interests</h3>
+                <p id="summaryInterests">Not selected</p>
+              </div>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="tripName">Name Your Trip</label>
+            <input
+              type="text"
+              id="tripName"
+              placeholder="e.g., Summer Vacation 2023"
+              required
+            />
+          </div>
+          <div class="form-actions">
+            <button type="button" class="btn btn-outline prev-step">
+              Previous
+            </button>
+            <button type="submit" class="btn btn-primary">
+              Generate Itinerary
+            </button>
+          </div>
+        </div>
+      </form>
     </main>
 
     <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
-    <script>
-        // List of countries (sorted alphabetically)
-        const countries = [
-            "Afghanistan", "Albania", "Algeria", "Andorra", "Angola", "Antigua and Barbuda", "Argentina", "Armenia",
-            "Australia", "Austria", "Azerbaijan", "Bahamas", "Bahrain", "Bangladesh", "Barbados", "Belarus",
-            "Belgium", "Belize", "Benin", "Bhutan", "Bolivia", "Bosnia and Herzegovina", "Botswana", "Brazil",
-            "Brunei", "Bulgaria", "Burkina Faso", "Burundi", "Cabo Verde", "Cambodia", "Cameroon", "Canada",
-            "Central African Republic", "Chad", "Chile", "China", "Colombia", "Comoros", "Congo", "Costa Rica",
-            "Croatia", "Cuba", "Cyprus", "Czech Republic", "Denmark", "Djibouti", "Dominica", "Dominican Republic",
-            "Ecuador", "Egypt", "El Salvador", "Equatorial Guinea", "Eritrea", "Estonia", "Eswatini", "Ethiopia",
-            "Fiji", "Finland", "France", "Gabon", "Gambia", "Georgia", "Germany", "Ghana", "Greece", "Grenada",
-            "Guatemala", "Guinea", "Guinea-Bissau", "Guyana", "Haiti", "Honduras", "Hungary", "Iceland", "India",
-            "Indonesia", "Iran", "Iraq", "Ireland", "Israel", "Italy", "Jamaica", "Japan", "Jordan", "Kazakhstan",
-            "Kenya", "Kiribati", "Kuwait", "Kyrgyzstan", "Laos", "Latvia", "Lebanon", "Lesotho", "Liberia", "Libya",
-            "Liechtenstein", "Lithuania", "Luxembourg", "Madagascar", "Malawi", "Malaysia", "Maldives", "Mali",
-            "Malta", "Marshall Islands", "Mauritania", "Mauritius", "Mexico", "Micronesia", "Moldova", "Monaco",
-            "Mongolia", "Montenegro", "Morocco", "Mozambique", "Myanmar", "Namibia", "Nauru", "Nepal", "Netherlands",
-            "New Zealand", "Nicaragua", "Niger", "Nigeria", "North Korea", "North Macedonia", "Norway", "Oman",
-            "Pakistan", "Palau", "Panama", "Papua New Guinea", "Paraguay", "Peru", "Philippines", "Poland", "Portugal",
-            "Qatar", "Romania", "Russia", "Rwanda", "Saint Kitts and Nevis", "Saint Lucia", "Saint Vincent and the Grenadines",
-            "Samoa", "San Marino", "Sao Tome and Principe", "Saudi Arabia", "Senegal", "Serbia", "Seychelles", "Sierra Leone",
-            "Singapore", "Slovakia", "Slovenia", "Solomon Islands", "Somalia", "South Africa", "South Korea", "South Sudan",
-            "Spain", "Sri Lanka", "Sudan", "Suriname", "Sweden", "Switzerland", "Syria", "Taiwan", "Tajikistan", "Tanzania",
-            "Thailand", "Timor-Leste", "Togo", "Tonga", "Trinidad and Tobago", "Tunisia", "Turkey", "Turkmenistan", "Tuvalu",
-            "Uganda", "Ukraine", "United Arab Emirates", "United Kingdom", "United States", "Uruguay", "Uzbekistan", "Vanuatu",
-            "Vatican City", "Venezuela", "Vietnam", "Yemen", "Zambia", "Zimbabwe"
-        ];
+    <script type="module">
+      import { handleLogout } from "./utils.js";
+      // List of countries (sorted alphabetically)
+      const countries = [
+        "Afghanistan",
+        "Albania",
+        "Algeria",
+        "Andorra",
+        "Angola",
+        "Antigua and Barbuda",
+        "Argentina",
+        "Armenia",
+        "Australia",
+        "Austria",
+        "Azerbaijan",
+        "Bahamas",
+        "Bahrain",
+        "Bangladesh",
+        "Barbados",
+        "Belarus",
+        "Belgium",
+        "Belize",
+        "Benin",
+        "Bhutan",
+        "Bolivia",
+        "Bosnia and Herzegovina",
+        "Botswana",
+        "Brazil",
+        "Brunei",
+        "Bulgaria",
+        "Burkina Faso",
+        "Burundi",
+        "Cabo Verde",
+        "Cambodia",
+        "Cameroon",
+        "Canada",
+        "Central African Republic",
+        "Chad",
+        "Chile",
+        "China",
+        "Colombia",
+        "Comoros",
+        "Congo",
+        "Costa Rica",
+        "Croatia",
+        "Cuba",
+        "Cyprus",
+        "Czech Republic",
+        "Denmark",
+        "Djibouti",
+        "Dominica",
+        "Dominican Republic",
+        "Ecuador",
+        "Egypt",
+        "El Salvador",
+        "Equatorial Guinea",
+        "Eritrea",
+        "Estonia",
+        "Eswatini",
+        "Ethiopia",
+        "Fiji",
+        "Finland",
+        "France",
+        "Gabon",
+        "Gambia",
+        "Georgia",
+        "Germany",
+        "Ghana",
+        "Greece",
+        "Grenada",
+        "Guatemala",
+        "Guinea",
+        "Guinea-Bissau",
+        "Guyana",
+        "Haiti",
+        "Honduras",
+        "Hungary",
+        "Iceland",
+        "India",
+        "Indonesia",
+        "Iran",
+        "Iraq",
+        "Ireland",
+        "Israel",
+        "Italy",
+        "Jamaica",
+        "Japan",
+        "Jordan",
+        "Kazakhstan",
+        "Kenya",
+        "Kiribati",
+        "Kuwait",
+        "Kyrgyzstan",
+        "Laos",
+        "Latvia",
+        "Lebanon",
+        "Lesotho",
+        "Liberia",
+        "Libya",
+        "Liechtenstein",
+        "Lithuania",
+        "Luxembourg",
+        "Madagascar",
+        "Malawi",
+        "Malaysia",
+        "Maldives",
+        "Mali",
+        "Malta",
+        "Marshall Islands",
+        "Mauritania",
+        "Mauritius",
+        "Mexico",
+        "Micronesia",
+        "Moldova",
+        "Monaco",
+        "Mongolia",
+        "Montenegro",
+        "Morocco",
+        "Mozambique",
+        "Myanmar",
+        "Namibia",
+        "Nauru",
+        "Nepal",
+        "Netherlands",
+        "New Zealand",
+        "Nicaragua",
+        "Niger",
+        "Nigeria",
+        "North Korea",
+        "North Macedonia",
+        "Norway",
+        "Oman",
+        "Pakistan",
+        "Palau",
+        "Panama",
+        "Papua New Guinea",
+        "Paraguay",
+        "Peru",
+        "Philippines",
+        "Poland",
+        "Portugal",
+        "Qatar",
+        "Romania",
+        "Russia",
+        "Rwanda",
+        "Saint Kitts and Nevis",
+        "Saint Lucia",
+        "Saint Vincent and the Grenadines",
+        "Samoa",
+        "San Marino",
+        "Sao Tome and Principe",
+        "Saudi Arabia",
+        "Senegal",
+        "Serbia",
+        "Seychelles",
+        "Sierra Leone",
+        "Singapore",
+        "Slovakia",
+        "Slovenia",
+        "Solomon Islands",
+        "Somalia",
+        "South Africa",
+        "South Korea",
+        "South Sudan",
+        "Spain",
+        "Sri Lanka",
+        "Sudan",
+        "Suriname",
+        "Sweden",
+        "Switzerland",
+        "Syria",
+        "Taiwan",
+        "Tajikistan",
+        "Tanzania",
+        "Thailand",
+        "Timor-Leste",
+        "Togo",
+        "Tonga",
+        "Trinidad and Tobago",
+        "Tunisia",
+        "Turkey",
+        "Turkmenistan",
+        "Tuvalu",
+        "Uganda",
+        "Ukraine",
+        "United Arab Emirates",
+        "United Kingdom",
+        "United States",
+        "Uruguay",
+        "Uzbekistan",
+        "Vanuatu",
+        "Vatican City",
+        "Venezuela",
+        "Vietnam",
+        "Yemen",
+        "Zambia",
+        "Zimbabwe",
+      ];
 
-        // Initialize Flatpickr for date selection
-        flatpickr("#tripDates", {
-            mode: "range",
-            dateFormat: "Y-m-d",
-            minDate: "today",
-            onChange: function(selectedDates) {
-                if (selectedDates.length === 2) {
-                    const diffTime = Math.abs(selectedDates[1] - selectedDates[0]);
-                    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-                    document.getElementById("durationDisplay").textContent = `${diffDays} days`;
-                    document.getElementById("summaryDates").textContent = 
-                        `${selectedDates[0].toLocaleDateString()} - ${selectedDates[1].toLocaleDateString()}`;
-                }
-            }
+      // Initialize Flatpickr for date selection
+      flatpickr("#tripDates", {
+        mode: "range",
+        dateFormat: "Y-m-d",
+        minDate: "today",
+        onChange: function (selectedDates) {
+          if (selectedDates.length === 2) {
+            const diffTime = Math.abs(selectedDates[1] - selectedDates[0]);
+            const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+            document.getElementById(
+              "durationDisplay"
+            ).textContent = `${diffDays} days`;
+            document.getElementById(
+              "summaryDates"
+            ).textContent = `${selectedDates[0].toLocaleDateString()} - ${selectedDates[1].toLocaleDateString()}`;
+          }
+        },
+      });
+
+      // Form navigation
+      const form = document.getElementById("tripForm");
+      const steps = document.querySelectorAll(".form-step");
+      const stepIndicators = document.querySelectorAll(".step");
+      const nextButtons = document.querySelectorAll(".next-step");
+      const prevButtons = document.querySelectorAll(".prev-step");
+      let currentStep = 1;
+
+      function updateStep(step) {
+        steps.forEach((s) => s.classList.remove("active"));
+        stepIndicators.forEach((s) => s.classList.remove("active"));
+        document
+          .querySelector(`.form-step[data-step="${step}"]`)
+          .classList.add("active");
+        document
+          .querySelector(`.step[data-step="${step}"]`)
+          .classList.add("active");
+        currentStep = step;
+      }
+
+      nextButtons.forEach((button) => {
+        button.addEventListener("click", () => {
+          if (currentStep < 5) {
+            updateStep(currentStep + 1);
+          }
         });
+      });
 
-        // Form navigation
-        const form = document.getElementById("tripForm");
-        const steps = document.querySelectorAll(".form-step");
-        const stepIndicators = document.querySelectorAll(".step");
-        const nextButtons = document.querySelectorAll(".next-step");
-        const prevButtons = document.querySelectorAll(".prev-step");
-        let currentStep = 1;
+      prevButtons.forEach((button) => {
+        button.addEventListener("click", () => {
+          if (currentStep > 1) {
+            updateStep(currentStep - 1);
+          }
+        });
+      });
 
-        function updateStep(step) {
-            steps.forEach(s => s.classList.remove("active"));
-            stepIndicators.forEach(s => s.classList.remove("active"));
-            document.querySelector(`.form-step[data-step="${step}"]`).classList.add("active");
-            document.querySelector(`.step[data-step="${step}"]`).classList.add("active");
-            currentStep = step;
+      // Autocomplete for destination
+      const destinationInput = document.getElementById("destination");
+      const suggestionsContainer = document.getElementById(
+        "autocompleteSuggestions"
+      );
+
+      function showSuggestions(input) {
+        suggestionsContainer.innerHTML = "";
+        if (input.length === 0) {
+          suggestionsContainer.style.display = "none";
+          return;
         }
 
-        nextButtons.forEach(button => {
-            button.addEventListener("click", () => {
-                if (currentStep < 5) {
-                    updateStep(currentStep + 1);
-                }
-            });
-        });
+        const filteredCountries = countries
+          .filter((country) =>
+            country.toLowerCase().startsWith(input.toLowerCase())
+          )
+          .sort(); // Ensure alphabetical order
 
-        prevButtons.forEach(button => {
-            button.addEventListener("click", () => {
-                if (currentStep > 1) {
-                    updateStep(currentStep - 1);
-                }
-            });
-        });
+        if (filteredCountries.length === 0) {
+          suggestionsContainer.style.display = "none";
+          return;
+        }
 
-        // Autocomplete for destination
-        const destinationInput = document.getElementById("destination");
-        const suggestionsContainer = document.getElementById("autocompleteSuggestions");
-
-        function showSuggestions(input) {
+        filteredCountries.forEach((country) => {
+          const suggestionItem = document.createElement("div");
+          suggestionItem.classList.add("suggestion-item");
+          suggestionItem.textContent = country;
+          suggestionItem.addEventListener("click", () => {
+            destinationInput.value = country;
+            document.getElementById("summaryDestination").textContent = country;
             suggestionsContainer.innerHTML = "";
-            if (input.length === 0) {
-                suggestionsContainer.style.display = "none";
-                return;
-            }
+            suggestionsContainer.style.display = "none";
+          });
+          suggestionsContainer.appendChild(suggestionItem);
+        });
 
-            const filteredCountries = countries
-                .filter(country => country.toLowerCase().startsWith(input.toLowerCase()))
-                .sort(); // Ensure alphabetical order
+        suggestionsContainer.style.display = "block";
+      }
 
-            if (filteredCountries.length === 0) {
-                suggestionsContainer.style.display = "none";
-                return;
-            }
+      destinationInput.addEventListener("input", () => {
+        showSuggestions(destinationInput.value);
+      });
 
-            filteredCountries.forEach(country => {
-                const suggestionItem = document.createElement("div");
-                suggestionItem.classList.add("suggestion-item");
-                suggestionItem.textContent = country;
-                suggestionItem.addEventListener("click", () => {
-                    destinationInput.value = country;
-                    document.getElementById("summaryDestination").textContent = country;
-                    suggestionsContainer.innerHTML = "";
-                    suggestionsContainer.style.display = "none";
-                });
-                suggestionsContainer.appendChild(suggestionItem);
-            });
-
-            suggestionsContainer.style.display = "block";
+      // Hide suggestions when clicking outside
+      document.addEventListener("click", (e) => {
+        if (
+          !destinationInput.contains(e.target) &&
+          !suggestionsContainer.contains(e.target)
+        ) {
+          suggestionsContainer.style.display = "none";
         }
+      });
 
-        destinationInput.addEventListener("input", () => {
-            showSuggestions(destinationInput.value);
+      // Budget slider
+      const budgetRange = document.getElementById("budgetRange");
+      const budgetValue = document.getElementById("budgetValue");
+      const budgetCategories = document.querySelectorAll(".budget-category");
+
+      budgetRange.addEventListener("input", () => {
+        const value = budgetRange.value;
+        budgetValue.textContent = `$${value}`;
+        document.getElementById("summaryBudget").textContent = `$${value}`;
+        budgetCategories.forEach((cat) => {
+          const range = cat.getAttribute("data-value").split("-").map(Number);
+          cat.classList.toggle(
+            "active",
+            value >= range[0] && value <= range[1]
+          );
         });
+      });
 
-        // Hide suggestions when clicking outside
-        document.addEventListener("click", (e) => {
-            if (!destinationInput.contains(e.target) && !suggestionsContainer.contains(e.target)) {
-                suggestionsContainer.style.display = "none";
-            }
+      // Travel style selection
+      document.querySelectorAll(".preference-card").forEach((card) => {
+        card.addEventListener("click", () => {
+          document
+            .querySelectorAll(".preference-card")
+            .forEach((c) => c.classList.remove("active"));
+          card.classList.add("active");
+          const style = card.getAttribute("data-style");
+          document.getElementById("summaryStyle").textContent =
+            style.charAt(0).toUpperCase() + style.slice(1);
         });
+      });
 
-        // Budget slider
-        const budgetRange = document.getElementById("budgetRange");
-        const budgetValue = document.getElementById("budgetValue");
-        const budgetCategories = document.querySelectorAll(".budget-category");
+      // Interest tags (max 3)
+      const interestTags = document.querySelectorAll(".interest-tag");
+      let selectedInterests = [];
 
-        budgetRange.addEventListener("input", () => {
-            const value = budgetRange.value;
-            budgetValue.textContent = `$${value}`;
-            document.getElementById("summaryBudget").textContent = `$${value}`;
-            budgetCategories.forEach(cat => {
-                const range = cat.getAttribute("data-value").split("-").map(Number);
-                cat.classList.toggle("active", value >= range[0] && value <= range[1]);
-            });
+      interestTags.forEach((tag) => {
+        tag.addEventListener("click", () => {
+          const interest = tag.getAttribute("data-interest");
+          if (selectedInterests.includes(interest)) {
+            selectedInterests = selectedInterests.filter((i) => i !== interest);
+            tag.classList.remove("active");
+          } else if (selectedInterests.length < 3) {
+            selectedInterests.push(interest);
+            tag.classList.add("active");
+          }
+          document.getElementById("summaryInterests").textContent =
+            selectedInterests.length > 0
+              ? selectedInterests.join(", ")
+              : "Not selected";
         });
+      });
 
-        // Travel style selection
-        document.querySelectorAll(".preference-card").forEach(card => {
-            card.addEventListener("click", () => {
-                document.querySelectorAll(".preference-card").forEach(c => c.classList.remove("active"));
-                card.classList.add("active");
-                const style = card.getAttribute("data-style");
-                document.getElementById("summaryStyle").textContent = style.charAt(0).toUpperCase() + style.slice(1);
-            });
-        });
+      // Form submission
+      form.addEventListener("submit", (e) => {
+        e.preventDefault();
+        const tripName = document.getElementById("tripName").value;
+        alert(`Itinerary generated for: ${tripName}`);
+        // Add logic to generate itinerary here
+      });
 
-        // Interest tags (max 3)
-        const interestTags = document.querySelectorAll(".interest-tag");
-        let selectedInterests = [];
-
-        interestTags.forEach(tag => {
-            tag.addEventListener("click", () => {
-                const interest = tag.getAttribute("data-interest");
-                if (selectedInterests.includes(interest)) {
-                    selectedInterests = selectedInterests.filter(i => i !== interest);
-                    tag.classList.remove("active");
-                } else if (selectedInterests.length < 3) {
-                    selectedInterests.push(interest);
-                    tag.classList.add("active");
-                }
-                document.getElementById("summaryInterests").textContent = 
-                    selectedInterests.length > 0 ? selectedInterests.join(", ") : "Not selected";
-            });
-        });
-
-        // Form submission
-        form.addEventListener("submit", (e) => {
-            e.preventDefault();
-            const tripName = document.getElementById("tripName").value;
-            alert(`Itinerary generated for: ${tripName}`);
-            // Add logic to generate itinerary here
-        });
+      //handle logout
+      handleLogout();
     </script>
-</body>
+  </body>
 </html>

@@ -1,727 +1,1010 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Find Travel Buddies - TravelGuide</title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="ස://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="ස://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+    />
     <style>
-        :root {
-            --primary-color: #4361ee;
-            --secondary-color: #3a0ca3;
-            --accent-color: #f72585;
-            --light-color: #f8f9fa;
-            --dark-color: #212529;
-            --success-color: #4cc9f0;
-            --glass-blur: 12px;
-            --glass-opacity: 0.2;
-            --transition-speed: 0.3s;
-        }
+      :root {
+        --primary-color: #4361ee;
+        --secondary-color: #3a0ca3;
+        --accent-color: #f72585;
+        --light-color: #f8f9fa;
+        --dark-color: #212529;
+        --success-color: #4cc9f0;
+        --glass-blur: 12px;
+        --glass-opacity: 0.2;
+        --transition-speed: 0.3s;
+      }
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Poppins', sans-serif;
-        }
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: "Poppins", sans-serif;
+      }
 
-        body {
-            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
-            min-height: 100vh;
-            overflow-x: hidden;
-            color: var(--dark-color);
-            line-height: 1.6;
-        }
+      body {
+        background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+        min-height: 100vh;
+        overflow-x: hidden;
+        color: var(--dark-color);
+        line-height: 1.6;
+      }
 
-        .bg-animation {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: -1;
-            overflow: hidden;
-        }
+      .bg-animation {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: -1;
+        overflow: hidden;
+      }
 
-        .gradient-circle {
-            position: absolute;
-            border-radius: 50%;
-            filter: blur(80px);
-            opacity: 0.6;
-            animation-duration: 15s;
-            animation-timing-function: ease-in-out;
-            animation-iteration-count: infinite;
-        }
+      .gradient-circle {
+        position: absolute;
+        border-radius: 50%;
+        filter: blur(80px);
+        opacity: 0.6;
+        animation-duration: 15s;
+        animation-timing-function: ease-in-out;
+        animation-iteration-count: infinite;
+      }
 
-        .circle-1 {
-            width: 600px;
-            height: 600px;
-            background: radial-gradient(circle, var(--primary-color) 0%, transparent 70%);
-            top: -100px;
-            left: -100px;
-            animation-name: float;
-        }
+      .circle-1 {
+        width: 600px;
+        height: 600px;
+        background: radial-gradient(
+          circle,
+          var(--primary-color) 0%,
+          transparent 70%
+        );
+        top: -100px;
+        left: -100px;
+        animation-name: float;
+      }
 
-        .circle-2 {
-            width: 400px;
-            height: 400px;
-            background: radial-gradient(circle, var(--accent-color) 0%, transparent 70%);
-            bottom: -50px;
-            right: -50px;
-            animation-name: float-reverse;
-            animation-duration: 12s;
-        }
+      .circle-2 {
+        width: 400px;
+        height: 400px;
+        background: radial-gradient(
+          circle,
+          var(--accent-color) 0%,
+          transparent 70%
+        );
+        bottom: -50px;
+        right: -50px;
+        animation-name: float-reverse;
+        animation-duration: 12s;
+      }
 
-        .circle-3 {
-            width: 300px;
-            height: 300px;
-            background: radial-gradient(circle, var(--secondary-color) 0%, transparent 70%);
-            top: 50%;
-            right: 20%;
-            animation-name: float;
-            animation-duration: 10s;
-        }
+      .circle-3 {
+        width: 300px;
+        height: 300px;
+        background: radial-gradient(
+          circle,
+          var(--secondary-color) 0%,
+          transparent 70%
+        );
+        top: 50%;
+        right: 20%;
+        animation-name: float;
+        animation-duration: 10s;
+      }
 
-        @keyframes float {
-            0%, 100% { transform: translate(0, 0); }
-            50% { transform: translate(20px, 20px); }
+      @keyframes float {
+        0%,
+        100% {
+          transform: translate(0, 0);
         }
+        50% {
+          transform: translate(20px, 20px);
+        }
+      }
 
-        @keyframes float-reverse {
-            0%, 100% { transform: translate(0, 0); }
-            50% { transform: translate(-20px, -20px); }
+      @keyframes float-reverse {
+        0%,
+        100% {
+          transform: translate(0, 0);
         }
+        50% {
+          transform: translate(-20px, -20px);
+        }
+      }
 
-        .glass-nav {
-            background: rgba(255, 255, 255, var(--glass-opacity));
-            backdrop-filter: blur(var(--glass-blur));
-            padding: 1rem 2rem;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            position: fixed;
-            width: 100%;
-            top: 0;
-            z-index: 100;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-        }
+      .glass-nav {
+        background: rgba(255, 255, 255, var(--glass-opacity));
+        backdrop-filter: blur(var(--glass-blur));
+        padding: 1rem 2rem;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        position: fixed;
+        width: 100%;
+        top: 0;
+        z-index: 100;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      }
 
-        .logo {
-            font-size: 1.8rem;
-            font-weight: 700;
-            background: linear-gradient(to right, var(--primary-color), var(--accent-color));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
+      .logo {
+        font-size: 1.8rem;
+        font-weight: 700;
+        background: linear-gradient(
+          to right,
+          var(--primary-color),
+          var(--accent-color)
+        );
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+      }
 
-        .nav-links {
-            display: flex;
-            gap: 2rem;
-        }
+      .nav-links {
+        display: flex;
+        gap: 2rem;
+      }
 
-        .nav-link {
-            color: var(--dark-color);
-            text-decoration: none;
-            font-weight: 500;
-            position: relative;
-            transition: all var(--transition-speed) ease;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
+      .nav-link {
+        color: var(--dark-color);
+        text-decoration: none;
+        font-weight: 500;
+        position: relative;
+        transition: all var(--transition-speed) ease;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+      }
 
-        .nav-link:hover, .nav-link.active {
-            color: var(--primary-color);
-        }
+      .nav-link:hover,
+      .nav-link.active {
+        color: var(--primary-color);
+      }
 
-        .nav-link.active::after {
-            content: '';
-            position: absolute;
-            bottom: -5px;
-            left: 0;
-            width: 100%;
-            height: 2px;
-            background: var(--primary-color);
-            border-radius: 2px;
-        }
+      .nav-link.active::after {
+        content: "";
+        position: absolute;
+        bottom: -5px;
+        left: 0;
+        width: 100%;
+        height: 2px;
+        background: var(--primary-color);
+        border-radius: 2px;
+      }
 
-        .user-menu {
-            position: relative;
-            cursor: pointer;
-        }
+      .user-menu {
+        position: relative;
+        cursor: pointer;
+      }
 
-        .user-avatar {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            overflow: hidden;
-        }
+      .user-avatar {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        overflow: hidden;
+      }
 
-        .user-avatar img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
+      .user-avatar img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
 
-        .user-dropdown {
-            position: absolute;
-            top: 100%;
-            right: 0;
-            background: white;
-            border-radius: 10px;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-            padding: 0.5rem 0;
-            width: 200px;
-            opacity: 0;
-            visibility: hidden;
-            transition: all var(--transition-speed) ease;
-        }
+      .user-dropdown {
+        position: absolute;
+        top: 100%;
+        right: 0;
+        background: white;
+        border-radius: 10px;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        padding: 0.5rem 0;
+        width: 200px;
+        opacity: 0;
+        visibility: hidden;
+        transition: all var(--transition-speed) ease;
+      }
 
-        .user-menu:hover .user-dropdown {
-            opacity: 1;
-            visibility: visible;
-            transform: translateY(5px);
-        }
+      .user-menu:hover .user-dropdown {
+        opacity: 1;
+        visibility: visible;
+        transform: translateY(5px);
+      }
 
-        .user-dropdown a {
-            display: block;
-            padding: 0.5rem 1rem;
-            color: var(--dark-color);
-            text-decoration: none;
-        }
+      .user-dropdown a {
+        display: block;
+        padding: 0.5rem 1rem;
+        color: var(--dark-color);
+        text-decoration: none;
+      }
 
-        .user-dropdown a:hover {
-            background: rgba(67, 97, 238, 0.1);
-            color: var(--primary-color);
-        }
+      .user-dropdown a:hover {
+        background: rgba(67, 97, 238, 0.1);
+        color: var(--primary-color);
+      }
 
-        .btn {
-            padding: 0.5rem 1.2rem;
-            border-radius: 50px;
-            font-weight: 500;
-            cursor: pointer;
-            transition: all var(--transition-speed) ease;
-            border: none;
-            text-align: center;
-        }
+      .btn {
+        padding: 0.5rem 1.2rem;
+        border-radius: 50px;
+        font-weight: 500;
+        cursor: pointer;
+        transition: all var(--transition-speed) ease;
+        border: none;
+        text-align: center;
+      }
 
-        .btn-primary {
-            background: linear-gradient(to right, var(--primary-color), var(--secondary-color));
-            color: white;
-            box-shadow: 0 4px 15px rgba(67, 97, 238, 0.3);
-        }
+      .btn-primary {
+        background: linear-gradient(
+          to right,
+          var(--primary-color),
+          var(--secondary-color)
+        );
+        color: white;
+        box-shadow: 0 4px 15px rgba(67, 97, 238, 0.3);
+      }
 
-        .btn-primary:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(67, 97, 238, 0.4);
-        }
+      .btn-primary:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(67, 97, 238, 0.4);
+      }
 
-        .btn-outline {
-            background: transparent;
-            color: var(--primary-color);
-            border: 2px solid var(--primary-color);
-        }
+      .btn-outline {
+        background: transparent;
+        color: var(--primary-color);
+        border: 2px solid var(--primary-color);
+      }
 
-        .btn-outline:hover {
-            background: var(--primary-color);
-            color: white;
-        }
+      .btn-outline:hover {
+        background: var(--primary-color);
+        color: white;
+      }
 
-        .buddies-container {
-            padding: 6rem 2rem 2rem;
-            max-width: 1200px;
-            margin: 0 auto;
-        }
+      .buddies-container {
+        padding: 6rem 2rem 2rem;
+        max-width: 1200px;
+        margin: 0 auto;
+      }
 
-        .buddies-header {
-            text-align: center;
-            padding: 2rem;
-            margin-bottom: 2rem;
-        }
+      .buddies-header {
+        text-align: center;
+        padding: 2rem;
+        margin-bottom: 2rem;
+      }
 
-        .buddies-header h1 {
-            font-size: 2.5rem;
-            background: linear-gradient(to right, var(--primary-color), var(--accent-color));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
+      .buddies-header h1 {
+        font-size: 2.5rem;
+        background: linear-gradient(
+          to right,
+          var(--primary-color),
+          var(--accent-color)
+        );
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+      }
 
-        .glass-card {
-            background: rgba(255, 255, 255, var(--glass-opacity));
-            backdrop-filter: blur(var(--glass-blur));
-            border-radius: 20px;
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
-            padding: 2rem;
-            transition: all var(--transition-speed) ease;
-        }
+      .glass-card {
+        background: rgba(255, 255, 255, var(--glass-opacity));
+        backdrop-filter: blur(var(--glass-blur));
+        border-radius: 20px;
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+        padding: 2rem;
+        transition: all var(--transition-speed) ease;
+      }
 
-        .glass-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15);
-        }
+      .glass-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15);
+      }
 
-        .buddies-filters {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 1rem;
-            margin-bottom: 2rem;
-            padding: 1.5rem;
-        }
+      .buddies-filters {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 1rem;
+        margin-bottom: 2rem;
+        padding: 1.5rem;
+      }
 
-        .filter-group {
-            flex: 1;
-            min-width: 200px;
-        }
+      .filter-group {
+        flex: 1;
+        min-width: 200px;
+      }
 
-        .filter-group label {
-            display: block;
-            margin-bottom: 0.5rem;
-            font-weight: 500;
-        }
+      .filter-group label {
+        display: block;
+        margin-bottom: 0.5rem;
+        font-weight: 500;
+      }
 
-        .filter-group select, .filter-group input {
-            width: 100%;
-            padding: 0.8rem;
-            border-radius: 50px;
-            border: 1px solid #ddd;
-            outline: none;
-            transition: all var(--transition-speed) ease;
-        }
+      .filter-group select,
+      .filter-group input {
+        width: 100%;
+        padding: 0.8rem;
+        border-radius: 50px;
+        border: 1px solid #ddd;
+        outline: none;
+        transition: all var(--transition-speed) ease;
+      }
 
-        .filter-group select:focus, .filter-group input:focus {
-            border-color: var(--primary-color);
-            box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.2);
-        }
+      .filter-group select:focus,
+      .filter-group input:focus {
+        border-color: var(--primary-color);
+        box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.2);
+      }
 
-        .input-with-icon {
-            position: relative;
-        }
+      .input-with-icon {
+        position: relative;
+      }
 
-        .input-with-icon i {
-            position: absolute;
-            left: 1rem;
-            top: 50%;
-            transform: translateY(-50%);
-            color: var(--primary-color);
-        }
+      .input-with-icon i {
+        position: absolute;
+        left: 1rem;
+        top: 50%;
+        transform: translateY(-50%);
+        color: var(--primary-color);
+      }
 
-        .input-with-icon input {
-            padding-left: 2.5rem;
-        }
+      .input-with-icon input {
+        padding-left: 2.5rem;
+      }
 
-        .autocomplete-suggestions {
-            position: absolute;
-            width: 100%;
-            background: white;
-            border-radius: 10px;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-            max-height: 200px;
-            overflow-y: auto;
-            z-index: 10;
-            margin-top: 0.5rem;
-        }
+      .autocomplete-suggestions {
+        position: absolute;
+        width: 100%;
+        background: white;
+        border-radius: 10px;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        max-height: 200px;
+        overflow-y: auto;
+        z-index: 10;
+        margin-top: 0.5rem;
+      }
 
-        .suggestion-item {
-            padding: 0.8rem 1rem;
-            cursor: pointer;
-            transition: all var(--transition-speed) ease;
-        }
+      .suggestion-item {
+        padding: 0.8rem 1rem;
+        cursor: pointer;
+        transition: all var(--transition-speed) ease;
+      }
 
-        .suggestion-item:hover {
-            background: rgba(67, 97, 238, 0.1);
-            color: var(--primary-color);
-        }
+      .suggestion-item:hover {
+        background: rgba(67, 97, 238, 0.1);
+        color: var(--primary-color);
+      }
 
-        .buddies-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 2rem;
-        }
+      .buddies-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 2rem;
+      }
 
-        .buddy-card {
-            display: flex;
-            flex-direction: column;
-            gap: 1rem;
-        }
+      .buddy-card {
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+      }
 
-        .buddy-header {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-        }
+      .buddy-header {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+      }
 
-        .buddy-avatar {
-            position: relative;
-            width: 60px;
-            height: 60px;
-        }
+      .buddy-avatar {
+        position: relative;
+        width: 60px;
+        height: 60px;
+      }
 
-        .buddy-avatar img {
-            width: 100%;
-            height: 100%;
-            border-radius: 50%;
-            object-fit: cover;
-        }
+      .buddy-avatar img {
+        width: 100%;
+        height: 100%;
+        border-radius: 50%;
+        object-fit: cover;
+      }
 
-        .buddy-status {
-            position: absolute;
-            bottom: 0;
-            right: 0;
-            width: 12px;
-            height: 12px;
-            border-radius: 50%;
-            border: 2px solid white;
-        }
+      .buddy-status {
+        position: absolute;
+        bottom: 0;
+        right: 0;
+        width: 12px;
+        height: 12px;
+        border-radius: 50%;
+        border: 2px solid white;
+      }
 
-        .buddy-status.online {
-            background: var(--success-color);
-        }
+      .buddy-status.online {
+        background: var(--success-color);
+      }
 
-        .buddy-status.offline {
-            background: #ccc;
-        }
+      .buddy-status.offline {
+        background: #ccc;
+      }
 
-        .buddy-info h3 {
-            font-size: 1.2rem;
-            margin-bottom: 0.2rem;
-        }
+      .buddy-info h3 {
+        font-size: 1.2rem;
+        margin-bottom: 0.2rem;
+      }
 
-        .buddy-info p {
-            font-size: 0.9rem;
-            opacity: 0.8;
-        }
+      .buddy-info p {
+        font-size: 0.9rem;
+        opacity: 0.8;
+      }
 
-        .buddy-rating {
-            display: flex;
-            align-items: center;
-            gap: 0.3rem;
-            font-size: 0.8rem;
-            color: #f4b400;
-        }
+      .buddy-rating {
+        display: flex;
+        align-items: center;
+        gap: 0.3rem;
+        font-size: 0.8rem;
+        color: #f4b400;
+      }
 
-        .buddy-rating span {
-            color: var(--dark-color);
-            opacity: 0.8;
-        }
+      .buddy-rating span {
+        color: var(--dark-color);
+        opacity: 0.8;
+      }
 
-        .buddy-details {
-            display: flex;
-            flex-direction: column;
-            gap: 0.5rem;
-        }
+      .buddy-details {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+      }
 
-        .detail-item {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            font-size: 0.9rem;
-        }
+      .detail-item {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        font-size: 0.9rem;
+      }
 
-        .detail-item i {
-            color: var(--primary-color);
-        }
+      .detail-item i {
+        color: var(--primary-color);
+      }
 
-        .buddy-bio p {
-            font-size: 0.9rem;
-            opacity: 0.8;
-        }
+      .buddy-bio p {
+        font-size: 0.9rem;
+        opacity: 0.8;
+      }
 
-        .buddy-actions {
-            display: flex;
-            gap: 1rem;
-        }
+      .buddy-actions {
+        display: flex;
+        gap: 1rem;
+      }
     </style>
-</head>
-<body>
+    <script type="module">
+      import { checkTokenValidity } from "../utils.js";
+      checkTokenValidity();
+    </script>
+  </head>
+  <body>
     <div class="bg-animation">
-        <div class="gradient-circle circle-1"></div>
-        <div class="gradient-circle circle-2"></div>
-        <div class="gradient-circle circle-3"></div>
+      <div class="gradient-circle circle-1"></div>
+      <div class="gradient-circle circle-2"></div>
+      <div class="gradient-circle circle-3"></div>
     </div>
 
     <nav class="glass-nav">
-        <div class="logo">TravelGuide</div>
-        <div class="nav-links">
-            <a href="index.html" class="nav-link"><i class="fas fa-home"></i> Home</a>
-            <a href="plan-trip.html" class="nav-link"><i class="fas fa-map-marked-alt"></i> Plan Trip</a>
-            <a href="buddies.html" class="nav-link active"><i class="fas fa-users"></i> Find Buddies</a>
-            <a href="reviews.html" class="nav-link"><i class="fas fa-star"></i> Reviews</a>
+      <div class="logo">TravelGuide</div>
+      <div class="nav-links">
+        <a href="index.html" class="nav-link"
+          ><i class="fas fa-home"></i> Home</a
+        >
+        <a href="plan-trip.html" class="nav-link"
+          ><i class="fas fa-map-marked-alt"></i> Plan Trip</a
+        >
+        <a href="buddies.html" class="nav-link active"
+          ><i class="fas fa-users"></i> Find Buddies</a
+        >
+      </div>
+      <div class="user-menu">
+        <div class="user-avatar">
+          <img src="https://via.placeholder.com/40" alt="User Avatar" />
         </div>
-        <div class="user-menu">
-            <div class="user-avatar">
-                <img src="https://via.placeholder.com/40" alt="User Avatar">
-            </div>
-            <div class="user-dropdown">
-                <a href="dashboard.html"><i class="fas fa-tachometer-alt"></i> Dashboard</a>
-                <a href="#"><i class="fas fa-user"></i> Profile</a>
-                <a href="#" id="logoutBtn"><i class="fas fa-sign-out-alt"></i> Logout</a>
-            </div>
+        <div class="user-dropdown">
+          <a href="dashboard.html"
+            ><i class="fas fa-tachometer-alt"></i> Dashboard</a
+          >
+          <a href="#"><i class="fas fa-user"></i> Profile</a>
+          <a href="#" id="logoutBtn"
+            ><i class="fas fa-sign-out-alt"></i> Logout</a
+          >
         </div>
+      </div>
     </nav>
 
     <main class="buddies-container">
-        <div class="buddies-header glass-card">
-            <h1><i class="fas fa-users"></i> Find Your Travel Buddies</h1>
-            <p>Connect with like-minded travelers who share your interests and travel style</p>
+      <div class="buddies-header glass-card">
+        <h1><i class="fas fa-users"></i> Find Your Travel Buddies</h1>
+        <p>
+          Connect with like-minded travelers who share your interests and travel
+          style
+        </p>
+      </div>
+
+      <div class="buddies-filters glass-card">
+        <div class="filter-group">
+          <label for="buddyDestination"
+            ><i class="fas fa-map-marker-alt"></i> Destination</label
+          >
+          <div class="input-with-icon">
+            <i class="fas fa-search"></i>
+            <input
+              type="text"
+              id="buddyDestination"
+              placeholder="Search for a country"
+            />
+            <div
+              class="autocomplete-suggestions"
+              id="autocompleteSuggestions"
+            ></div>
+          </div>
+        </div>
+        <div class="filter-group">
+          <label for="buddyDates"
+            ><i class="fas fa-calendar-alt"></i> Travel Dates</label
+          >
+          <select id="buddyDates">
+            <option value="any">Any Dates</option>
+            <option value="next-month">Next Month</option>
+            <option value="next-3months">Next 3 Months</option>
+            <option value="next-6months">Next 6 Months</option>
+            <option value="specific">Specific Dates</option>
+          </select>
+        </div>
+        <div class="filter-group">
+          <label for="buddyAge"><i class="fas fa-user"></i> Age Range</label>
+          <select id="buddyAge">
+            <option value="any">Any Age</option>
+            <option value="18-25">18-25</option>
+            <option value="26-35">26-35</option>
+            <option value="36-45">36-45</option>
+            <option value="46+">46+</option>
+          </select>
+        </div>
+        <div class="filter-group">
+          <label for="buddyGender"
+            ><i class="fas fa-venus-mars"></i> Gender</label
+          >
+          <select id="buddyGender">
+            <option value="any">Any Gender</option>
+            <option value="female">Female</option>
+            <option value="male">Male</option>
+            <option value="other">Other</option>
+          </select>
+        </div>
+        <button class="btn btn-primary" id="findBuddiesBtn">
+          Find Buddies
+        </button>
+      </div>
+
+      <div class="buddies-grid">
+        <div class="buddy-card glass-card">
+          <div class="buddy-header">
+            <div class="buddy-avatar">
+              <img src="https://via.placeholder.com/60" alt="Travel Buddy" />
+              <div class="buddy-status online"></div>
+            </div>
+            <div class="buddy-info">
+              <h3>Alex Johnson</h3>
+              <p><i class="fas fa-map-marker-alt"></i> New York, USA</p>
+              <div class="buddy-rating">
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="far fa-star"></i>
+                <span>4.0 (12 reviews)</span>
+              </div>
+            </div>
+          </div>
+          <div class="buddy-details">
+            <div class="detail-item">
+              <i class="fas fa-plane"></i>
+              <span>Tokyo, Japan • May 15-30, 2023</span>
+            </div>
+            <div class="detail-item">
+              <i class="fas fa-wallet"></i>
+              <span>Mid-range budget ($150-$300/day)</span>
+            </div>
+            <div class="detail-item">
+              <i class="fas fa-heart"></i>
+              <span>Adventure, Food, Photography</span>
+            </div>
+          </div>
+          <div class="buddy-bio">
+            <p>
+              Digital nomad looking for a buddy to explore Tokyo's hidden gems
+              and food scene. I speak basic Japanese and love finding
+              off-the-beaten-path experiences.
+            </p>
+          </div>
+          <div class="buddy-actions">
+            <button class="btn btn-outline">
+              <i class="far fa-envelope"></i> Message
+            </button>
+            <button class="btn btn-primary">
+              <i class="fas fa-user-plus"></i> Connect
+            </button>
+          </div>
         </div>
 
-        <div class="buddies-filters glass-card">
-            <div class="filter-group">
-                <label for="buddyDestination"><i class="fas fa-map-marker-alt"></i> Destination</label>
-                <div class="input-with-icon">
-                    <i class="fas fa-search"></i>
-                    <input type="text" id="buddyDestination" placeholder="Search for a country">
-                    <div class="autocomplete-suggestions" id="autocompleteSuggestions"></div>
-                </div>
+        <div class="buddy-card glass-card">
+          <div class="buddy-header">
+            <div class="buddy-avatar">
+              <img src="https://via.placeholder.com/60" alt="Travel Buddy" />
+              <div class="buddy-status offline"></div>
             </div>
-            <div class="filter-group">
-                <label for="buddyDates"><i class="fas fa-calendar-alt"></i> Travel Dates</label>
-                <select id="buddyDates">
-                    <option value="any">Any Dates</option>
-                    <option value="next-month">Next Month</option>
-                    <option value="next-3months">Next 3 Months</option>
-                    <option value="next-6months">Next 6 Months</option>
-                    <option value="specific">Specific Dates</option>
-                </select>
+            <div class="buddy-info">
+              <h3>Sophie Martin</h3>
+              <p><i class="fas fa-map-marker-alt"></i> Paris, France</p>
+              <div class="buddy-rating">
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <span>5.0 (8 reviews)</span>
+              </div>
             </div>
-            <div class="filter-group">
-                <label for="buddyAge"><i class="fas fa-user"></i> Age Range</label>
-                <select id="buddyAge">
-                    <option value="any">Any Age</option>
-                    <option value="18-25">18-25</option>
-                    <option value="26-35">26-35</option>
-                    <option value="36-45">36-45</option>
-                    <option value="46+">46+</option>
-                </select>
+          </div>
+          <div class="buddy-details">
+            <div class="detail-item">
+              <i class="fas fa-plane"></i>
+              <span>Bali, Indonesia • July 1-14, 2023</span>
             </div>
-            <div class="filter-group">
-                <label for="buddyGender"><i class="fas fa-venus-mars"></i> Gender</label>
-                <select id="buddyGender">
-                    <option value="any">Any Gender</option>
-                    <option value="female">Female</option>
-                    <option value="male">Male</option>
-                    <option value="other">Other</option>
-                </select>
+            <div class="detail-item">
+              <i class="fas fa-wallet"></i>
+              <span>Luxury budget ($300+/day)</span>
             </div>
-            <button class="btn btn-primary" id="findBuddiesBtn">Find Buddies</button>
+            <div class="detail-item">
+              <i class="fas fa-heart"></i>
+              <span>Relaxation, Yoga, Beaches</span>
+            </div>
+          </div>
+          <div class="buddy-bio">
+            <p>
+              Looking for a female travel companion to share a villa in Bali.
+              I'm planning a wellness retreat and would love company for spa
+              days and healthy dining.
+            </p>
+          </div>
+          <div class="buddy-actions">
+            <button class="btn btn-outline">
+              <i class="far fa-envelope"></i> Message
+            </button>
+            <button class="btn btn-primary">
+              <i class="fas fa-user-plus"></i> Connect
+            </button>
+          </div>
         </div>
 
-        <div class="buddies-grid">
-            <div class="buddy-card glass-card">
-                <div class="buddy-header">
-                    <div class="buddy-avatar">
-                        <img src="https://via.placeholder.com/60" alt="Travel Buddy">
-                        <div class="buddy-status online"></div>
-                    </div>
-                    <div class="buddy-info">
-                        <h3>Alex Johnson</h3>
-                        <p><i class="fas fa-map-marker-alt"></i> New York, USA</p>
-                        <div class="buddy-rating">
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            <i class="far fa-star"></i>
-                            <span>4.0 (12 reviews)</span>
-                        </div>
-                    </div>
-                </div>
-                <div class="buddy-details">
-                    <div class="detail-item">
-                        <i class="fas fa-plane"></i>
-                        <span>Tokyo, Japan • May 15-30, 2023</span>
-                    </div>
-                    <div class="detail-item">
-                        <i class="fas fa-wallet"></i>
-                        <span>Mid-range budget ($150-$300/day)</span>
-                    </div>
-                    <div class="detail-item">
-                        <i class="fas fa-heart"></i>
-                        <span>Adventure, Food, Photography</span>
-                    </div>
-                </div>
-                <div class="buddy-bio">
-                    <p>Digital nomad looking for a buddy to explore Tokyo's hidden gems and food scene. I speak basic Japanese and love finding off-the-beaten-path experiences.</p>
-                </div>
-                <div class="buddy-actions">
-                    <button class="btn btn-outline"><i class="far fa-envelope"></i> Message</button>
-                    <button class="btn btn-primary"><i class="fas fa-user-plus"></i> Connect</button>
-                </div>
+        <div class="buddy-card glass-card">
+          <div class="buddy-header">
+            <div class="buddy-avatar">
+              <img src="https://via.placeholder.com/60" alt="Travel Buddy" />
+              <div class="buddy-status online"></div>
             </div>
-
-            <div class="buddy-card glass-card">
-                <div class="buddy-header">
-                    <div class="buddy-avatar">
-                        <img src="https://via.placeholder.com/60" alt="Travel Buddy">
-                        <div class="buddy-status offline"></div>
-                    </div>
-                    <div class="buddy-info">
-                        <h3>Sophie Martin</h3>
-                        <p><i class="fas fa-map-marker-alt"></i> Paris, France</p>
-                        <div class="buddy-rating">
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            <span>5.0 (8 reviews)</span>
-                        </div>
-                    </div>
-                </div>
-                <div class="buddy-details">
-                    <div class="detail-item">
-                        <i class="fas fa-plane"></i>
-                        <span>Bali, Indonesia • July 1-14, 2023</span>
-                    </div>
-                    <div class="detail-item">
-                        <i class="fas fa-wallet"></i>
-                        <span>Luxury budget ($300+/day)</span>
-                    </div>
-                    <div class="detail-item">
-                        <i class="fas fa-heart"></i>
-                        <span>Relaxation, Yoga, Beaches</span>
-                    </div>
-                </div>
-                <div class="buddy-bio">
-                    <p>Looking for a female travel companion to share a villa in Bali. I'm planning a wellness retreat and would love company for spa days and healthy dining.</p>
-                </div>
-                <div class="buddy-actions">
-                    <button class="btn btn-outline"><i class="far fa-envelope"></i> Message</button>
-                    <button class="btn btn-primary"><i class="fas fa-user-plus"></i> Connect</button>
-                </div>
+            <div class="buddy-info">
+              <h3>Raj Patel</h3>
+              <p><i class="fas fa-map-marker-alt"></i> London, UK</p>
+              <div class="buddy-rating">
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star-half-alt"></i>
+                <span>4.5 (15 reviews)</span>
+              </div>
             </div>
-
-            <div class="buddy-card glass-card">
-                <div class="buddy-header">
-                    <div class="buddy-avatar">
-                        <img src="https://via.placeholder.com/60" alt="Travel Buddy">
-                        <div class="buddy-status online"></div>
-                    </div>
-                    <div class="buddy-info">
-                        <h3>Raj Patel</h3>
-                        <p><i class="fas fa-map-marker-alt"></i> London, UK</p>
-                        <div class="buddy-rating">
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star-half-alt"></i>
-                            <span>4.5 (15 reviews)</span>
-                        </div>
-                    </div>
-                </div>
-                <div class="buddy-details">
-                    <div class="detail-item">
-                        <i class="fas fa-plane"></i>
-                        <span>Rome, Italy • June 10-20, 2023</span>
-                    </div>
-                    <div class="detail-item">
-                        <i class="fas fa-wallet"></i>
-                        <span>Budget ($100-$150/day)</span>
-                    </div>
-                    <div class="detail-item">
-                        <i class="fas fa-heart"></i>
-                        <span>Cultural, History, Architecture</span>
-                    </div>
-                </div>
-                <div class="buddy-bio">
-                    <p>History enthusiast looking for someone to explore Rome's ancient ruins and museums. I enjoy deep conversations about art and culture.</p>
-                </div>
-                <div class="buddy-actions">
-                    <button class="btn btn-outline"><i class="far fa-envelope"></i> Message</button>
-                    <button class="btn btn-primary"><i class="fas fa-user-plus"></i> Connect</button>
-                </div>
+          </div>
+          <div class="buddy-details">
+            <div class="detail-item">
+              <i class="fas fa-plane"></i>
+              <span>Rome, Italy • June 10-20, 2023</span>
             </div>
+            <div class="detail-item">
+              <i class="fas fa-wallet"></i>
+              <span>Budget ($100-$150/day)</span>
+            </div>
+            <div class="detail-item">
+              <i class="fas fa-heart"></i>
+              <span>Cultural, History, Architecture</span>
+            </div>
+          </div>
+          <div class="buddy-bio">
+            <p>
+              History enthusiast looking for someone to explore Rome's ancient
+              ruins and museums. I enjoy deep conversations about art and
+              culture.
+            </p>
+          </div>
+          <div class="buddy-actions">
+            <button class="btn btn-outline">
+              <i class="far fa-envelope"></i> Message
+            </button>
+            <button class="btn btn-primary">
+              <i class="fas fa-user-plus"></i> Connect
+            </button>
+          </div>
         </div>
+      </div>
     </main>
 
-    <script>
-        const countries = [
-            "Afghanistan", "Albania", "Algeria", "Andorra", "Angola", "Antigua and Barbuda", "Argentina", "Armenia",
-            "Australia", "Austria", "Azerbaijan", "Bahamas", "Bahrain", "Bangladesh", "Barbados", "Belarus",
-            "Belgium", "Belize", "Benin", "Bhutan", "Bolivia", "Bosnia and Herzegovina", "Botswana", "Brazil",
-            "Brunei", "Bulgaria", "Burkina Faso", "Burundi", "Cabo Verde", "Cambodia", "Cameroon", "Canada",
-            "Central African Republic", "Chad", "Chile", "China", "Colombia", "Comoros", "Congo", "Costa Rica",
-            "Croatia", "Cuba", "Cyprus", "Czech Republic", "Denmark", "Djibouti", "Dominica", "Dominican Republic",
-            "Ecuador", "Egypt", "El Salvador", "Equatorial Guinea", "Eritrea", "Estonia", "Eswatini", "Ethiopia",
-            "Fiji", "Finland", "France", "Gabon", "Gambia", "Georgia", "Germany", "Ghana", "Greece", "Grenada",
-            "Guatemala", "Guinea", "Guinea-Bissau", "Guyana", "Haiti", "Honduras", "Hungary", "Iceland", "India",
-            "Indonesia", "Iran", "Iraq", "Ireland", "Israel", "Italy", "Jamaica", "Japan", "Jordan", "Kazakhstan",
-            "Kenya", "Kiribati", "Kuwait", "Kyrgyzstan", "Laos", "Latvia", "Lebanon", "Lesotho", "Liberia", "Libya",
-            "Liechtenstein", "Lithuania", "Luxembourg", "Madagascar", "Malawi", "Malaysia", "Maldives", "Mali",
-            "Malta", "Marshall Islands", "Mauritania", "Mauritius", "Mexico", "Micronesia", "Moldova", "Monaco",
-            "Mongolia", "Montenegro", "Morocco", "Mozambique", "Myanmar", "Namibia", "Nauru", "Nepal", "Netherlands",
-            "New Zealand", "Nicaragua", "Niger", "Nigeria", "North Korea", "North Macedonia", "Norway", "Oman",
-            "Pakistan", "Palau", "Panama", "Papua New Guinea", "Paraguay", "Peru", "Philippines", "Poland", "Portugal",
-            "Qatar", "Romania", "Russia", "Rwanda", "Saint Kitts and Nevis", "Saint Lucia", "Saint Vincent and the Grenadines",
-            "Samoa", "San Marino", "Sao Tome and Principe", "Saudi Arabia", "Senegal", "Serbia", "Seychelles", "Sierra Leone",
-            "Singapore", "Slovakia", "Slovenia", "Solomon Islands", "Somalia", "South Africa", "South Korea", "South Sudan",
-            "Spain", "Sri Lanka", "Sudan", "Suriname", "Sweden", "Switzerland", "Syria", "Taiwan", "Tajikistan", "Tanzania",
-            "Thailand", "Timor-Leste", "Togo", "Tonga", "Trinidad and Tobago", "Tunisia", "Turkey", "Turkmenistan", "Tuvalu",
-            "Uganda", "Ukraine", "United Arab Emirates", "United Kingdom", "United States", "Uruguay", "Uzbekistan", "Vanuatu",
-            "Vatican City", "Venezuela", "Vietnam", "Yemen", "Zambia", "Zimbabwe"
-        ];
+    <script type="module">
+      import { handleLogout } from "./utils.js";
+      handleLogout();
 
-        const destinationInput = document.getElementById("buddyDestination");
-        const suggestionsContainer = document.getElementById("autocompleteSuggestions");
+      const countries = [
+        "Afghanistan",
+        "Albania",
+        "Algeria",
+        "Andorra",
+        "Angola",
+        "Antigua and Barbuda",
+        "Argentina",
+        "Armenia",
+        "Australia",
+        "Austria",
+        "Azerbaijan",
+        "Bahamas",
+        "Bahrain",
+        "Bangladesh",
+        "Barbados",
+        "Belarus",
+        "Belgium",
+        "Belize",
+        "Benin",
+        "Bhutan",
+        "Bolivia",
+        "Bosnia and Herzegovina",
+        "Botswana",
+        "Brazil",
+        "Brunei",
+        "Bulgaria",
+        "Burkina Faso",
+        "Burundi",
+        "Cabo Verde",
+        "Cambodia",
+        "Cameroon",
+        "Canada",
+        "Central African Republic",
+        "Chad",
+        "Chile",
+        "China",
+        "Colombia",
+        "Comoros",
+        "Congo",
+        "Costa Rica",
+        "Croatia",
+        "Cuba",
+        "Cyprus",
+        "Czech Republic",
+        "Denmark",
+        "Djibouti",
+        "Dominica",
+        "Dominican Republic",
+        "Ecuador",
+        "Egypt",
+        "El Salvador",
+        "Equatorial Guinea",
+        "Eritrea",
+        "Estonia",
+        "Eswatini",
+        "Ethiopia",
+        "Fiji",
+        "Finland",
+        "France",
+        "Gabon",
+        "Gambia",
+        "Georgia",
+        "Germany",
+        "Ghana",
+        "Greece",
+        "Grenada",
+        "Guatemala",
+        "Guinea",
+        "Guinea-Bissau",
+        "Guyana",
+        "Haiti",
+        "Honduras",
+        "Hungary",
+        "Iceland",
+        "India",
+        "Indonesia",
+        "Iran",
+        "Iraq",
+        "Ireland",
+        "Israel",
+        "Italy",
+        "Jamaica",
+        "Japan",
+        "Jordan",
+        "Kazakhstan",
+        "Kenya",
+        "Kiribati",
+        "Kuwait",
+        "Kyrgyzstan",
+        "Laos",
+        "Latvia",
+        "Lebanon",
+        "Lesotho",
+        "Liberia",
+        "Libya",
+        "Liechtenstein",
+        "Lithuania",
+        "Luxembourg",
+        "Madagascar",
+        "Malawi",
+        "Malaysia",
+        "Maldives",
+        "Mali",
+        "Malta",
+        "Marshall Islands",
+        "Mauritania",
+        "Mauritius",
+        "Mexico",
+        "Micronesia",
+        "Moldova",
+        "Monaco",
+        "Mongolia",
+        "Montenegro",
+        "Morocco",
+        "Mozambique",
+        "Myanmar",
+        "Namibia",
+        "Nauru",
+        "Nepal",
+        "Netherlands",
+        "New Zealand",
+        "Nicaragua",
+        "Niger",
+        "Nigeria",
+        "North Korea",
+        "North Macedonia",
+        "Norway",
+        "Oman",
+        "Pakistan",
+        "Palau",
+        "Panama",
+        "Papua New Guinea",
+        "Paraguay",
+        "Peru",
+        "Philippines",
+        "Poland",
+        "Portugal",
+        "Qatar",
+        "Romania",
+        "Russia",
+        "Rwanda",
+        "Saint Kitts and Nevis",
+        "Saint Lucia",
+        "Saint Vincent and the Grenadines",
+        "Samoa",
+        "San Marino",
+        "Sao Tome and Principe",
+        "Saudi Arabia",
+        "Senegal",
+        "Serbia",
+        "Seychelles",
+        "Sierra Leone",
+        "Singapore",
+        "Slovakia",
+        "Slovenia",
+        "Solomon Islands",
+        "Somalia",
+        "South Africa",
+        "South Korea",
+        "South Sudan",
+        "Spain",
+        "Sri Lanka",
+        "Sudan",
+        "Suriname",
+        "Sweden",
+        "Switzerland",
+        "Syria",
+        "Taiwan",
+        "Tajikistan",
+        "Tanzania",
+        "Thailand",
+        "Timor-Leste",
+        "Togo",
+        "Tonga",
+        "Trinidad and Tobago",
+        "Tunisia",
+        "Turkey",
+        "Turkmenistan",
+        "Tuvalu",
+        "Uganda",
+        "Ukraine",
+        "United Arab Emirates",
+        "United Kingdom",
+        "United States",
+        "Uruguay",
+        "Uzbekistan",
+        "Vanuatu",
+        "Vatican City",
+        "Venezuela",
+        "Vietnam",
+        "Yemen",
+        "Zambia",
+        "Zimbabwe",
+      ];
 
-        function showSuggestions(input) {
-            suggestionsContainer.innerHTML = "";
-            if (input.length === 0) {
-                suggestionsContainer.style.display = "none";
-                return;
-            }
+      const destinationInput = document.getElementById("buddyDestination");
+      const suggestionsContainer = document.getElementById(
+        "autocompleteSuggestions"
+      );
 
-            const filteredCountries = countries
-                .filter(country => country.toLowerCase().startsWith(input.toLowerCase()))
-                .sort();
-
-            if (filteredCountries.length === 0) {
-                suggestionsContainer.style.display = "none";
-                return;
-            }
-
-            filteredCountries.forEach(country => {
-                const suggestionItem = document.createElement("div");
-                suggestionItem.classList.add("suggestion-item");
-                suggestionItem.textContent = country;
-                suggestionItem.addEventListener("click", () => {
-                    destinationInput.value = country;
-                    suggestionsContainer.innerHTML = "";
-                    suggestionsContainer.style.display = "none";
-                });
-                suggestionsContainer.appendChild(suggestionItem);
-            });
-
-            suggestionsContainer.style.display = "block";
+      function showSuggestions(input) {
+        suggestionsContainer.innerHTML = "";
+        if (input.length === 0) {
+          suggestionsContainer.style.display = "none";
+          return;
         }
 
-        destinationInput.addEventListener("input", () => {
-            showSuggestions(destinationInput.value);
+        const filteredCountries = countries
+          .filter((country) =>
+            country.toLowerCase().startsWith(input.toLowerCase())
+          )
+          .sort();
+
+        if (filteredCountries.length === 0) {
+          suggestionsContainer.style.display = "none";
+          return;
+        }
+
+        filteredCountries.forEach((country) => {
+          const suggestionItem = document.createElement("div");
+          suggestionItem.classList.add("suggestion-item");
+          suggestionItem.textContent = country;
+          suggestionItem.addEventListener("click", () => {
+            destinationInput.value = country;
+            suggestionsContainer.innerHTML = "";
+            suggestionsContainer.style.display = "none";
+          });
+          suggestionsContainer.appendChild(suggestionItem);
         });
 
-        document.addEventListener("click", (e) => {
-            if (!destinationInput.contains(e.target) && !suggestionsContainer.contains(e.target)) {
-                suggestionsContainer.style.display = "none";
-            }
-        });
+        suggestionsContainer.style.display = "block";
+      }
 
-        document.getElementById("findBuddiesBtn").addEventListener("click", () => {
-            const destination = destinationInput.value;
+      destinationInput.addEventListener("input", () => {
+        showSuggestions(destinationInput.value);
+      });
 
-            const dates = document.getElementById("buddyDates").value;
+      document.addEventListener("click", (e) => {
+        if (
+          !destinationInput.contains(e.target) &&
+          !suggestionsContainer.contains(e.target)
+        ) {
+          suggestionsContainer.style.display = "none";
+        }
+      });
 
+      document
+        .getElementById("findBuddiesBtn")
+        .addEventListener("click", () => {
+          const destination = destinationInput.value;
 
+          const dates = document.getElementById("buddyDates").value;
 
-            const age = document.getElementById("buddyAge").value;
-            
-            const gender = document.getElementById("buddyGender").value;
+          const age = document.getElementById("buddyAge").value;
 
-            console.log("Filtering buddies:", { destination, dates, age, gender });
-            alert(`Searching for buddies in ${destination || "any destination"}`);
+          const gender = document.getElementById("buddyGender").value;
+
+          console.log("Filtering buddies:", {
+            destination,
+            dates,
+            age,
+            gender,
+          });
+          alert(`Searching for buddies in ${destination || "any destination"}`);
         });
     </script>
-</body>
+  </body>
 </html>

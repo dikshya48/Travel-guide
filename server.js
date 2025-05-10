@@ -5,14 +5,15 @@ import cors from "cors";
 import Trip from "./models/Trip.js";
 import connectDB from "./db.js";
 import User from "./models/User.js";
-import auth from "./authMiddleware.js";
+import auth, { verifyToken } from "./authMiddleware.js";
 import { generateToken } from "./utils.js";
 
 const app = express();
 dotenv.config();
 
-app.use(json());
 app.use(cors());
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 app.use(serveStatic("public"));
 
 const port = process.env.PORT || 3000;
@@ -41,13 +42,11 @@ app.post("/api/register", async (req, res) => {
     };
 
     const user = await User.create(newUser);
-    res
-      .status(201)
-      .json({
-        message: "User registered successfully",
-        token: generateToken(user._id),
-        user: { id: user.id, name: user.name, email: user.email },
-      });
+    res.status(201).json({
+      message: "User registered successfully",
+      token: generateToken(user._id),
+      user: { id: user.id, name: user.name, email: user.email },
+    });
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: "Server error" });
@@ -60,7 +59,6 @@ app.post("/api/login", async (req, res) => {
     if (!email || !password) {
       return res.status(400).json({ error: "Email and password are required" });
     }
-
     const user = await User.findOne({ email });
     if (!user)
       return res.status(400).json({ error: "Invalid email or password" });
@@ -79,6 +77,10 @@ app.post("/api/login", async (req, res) => {
     console.error(error);
     res.status(500).json({ error: "Server error" });
   }
+});
+
+app.get("/api/check-auth", verifyToken, (req, res) => {
+  res.json({ message: "Token is valid" });
 });
 
 // save trip data to db
