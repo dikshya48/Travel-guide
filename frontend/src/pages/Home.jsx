@@ -14,7 +14,6 @@ export default function Home() {
       </p>
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-5xl mx-auto">
-        {/* Itinerary */}
         <div className="bg-white shadow-lg rounded-lg p-6 border border-gray-200 hover:shadow-xl transition">
           <FaMapMarkedAlt className="text-4xl text-blue-500 mx-auto mb-4" />
           <h3 className="text-xl font-semibold text-gray-700 mb-2">
@@ -24,14 +23,13 @@ export default function Home() {
             Create, update, and manage your travel plans.
           </p>
           <Link
-            to="/trips"
+            to="/"
             className="inline-block px-6 py-2 bg-blue-600 text-white rounded-full hover:bg-blue-700 transition"
           >
             Go to Itinerary
           </Link>
         </div>
 
-        {/* Travel Buddies */}
         <div className="bg-white shadow-lg rounded-lg p-6 border border-gray-200 hover:shadow-xl transition">
           <FaUsers className="text-4xl text-green-500 mx-auto mb-4" />
           <h3 className="text-xl font-semibold text-gray-700 mb-2">
@@ -41,14 +39,13 @@ export default function Home() {
             Connect with people who share your travel interests.
           </p>
           <Link
-            to="/buddies"
+            to="/"
             className="inline-block px-6 py-2 bg-green-600 text-white rounded-full hover:bg-green-700 transition"
           >
             Find Buddies
           </Link>
         </div>
 
-        {/* Explore */}
         <div className="bg-white shadow-lg rounded-lg p-6 border border-gray-200 hover:shadow-xl transition">
           <FaGlobeAsia className="text-4xl text-teal-500 mx-auto mb-4" />
           <h3 className="text-xl font-semibold text-gray-700 mb-2">
@@ -58,7 +55,7 @@ export default function Home() {
             Get inspired by top travel destinations around the world.
           </p>
           <Link
-            to="/explore"
+            to="/"
             className="inline-block px-6 py-2 bg-teal-600 text-white rounded-full hover:bg-teal-700 transition"
           >
             Start Exploring

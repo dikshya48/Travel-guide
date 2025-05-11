@@ -1,7 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
 import { FaUserCircle } from "react-icons/fa";
-
 import useAuthStore from "../store/authStore";
 
 export default function Navbar() {
@@ -19,7 +18,7 @@ export default function Navbar() {
         dropdownRef.current &&
         !dropdownRef.current.contains(event.target)
       ) {
-        setIsOpen(false); // Close dropdown if clicked outside
+        setIsOpen(false);
       }
     };
 
@@ -40,7 +39,10 @@ export default function Navbar() {
           <Link to="/" className="hover:text-gray-200 transition">
             Home
           </Link>
-          <Link
+          <Link to="/trips" className="hover:text-gray-200 transition">
+            Plan My Trip
+          </Link>
+          {/* <Link
             to="/create-itinerary"
             className="hover:text-gray-200 transition"
           >
@@ -54,28 +56,27 @@ export default function Navbar() {
             className="hover:text-gray-200 transition"
           >
             Explore
-          </Link>
+          </Link> */}
         </div>
 
-        <div className="md:flex items-center space-x-4">
+        <div className="flex items-center space-x-4">
           {!user ? (
             <>
               <Link
                 to="/login"
-                className="px-4 py-1 rounded-full border border-white text-white hover:bg-white hover:text-teal-600 transition"
+                className="px-4 py-1 rounded-full border border-white text-white hover:bg-white hover:text-teal-600 transition hidden md:inline"
               >
                 Login
               </Link>
               <Link
                 to="/register"
-                className="px-4 py-1 rounded-full bg-white text-teal-600 hover:bg-teal-700 hover:text-white transition"
+                className="px-4 py-1 rounded-full bg-white text-teal-600 hover:bg-teal-700 hover:text-white transition hidden md:inline"
               >
                 Register
               </Link>
             </>
-          ) : null}
-          {user && (
-            <div className="relative">
+          ) : (
+            <div className="relative hidden md:block">
               <button
                 ref={avatarRef}
                 onClick={() => setIsOpen(!isOpen)}
@@ -89,13 +90,6 @@ export default function Navbar() {
                   ref={dropdownRef}
                   className="absolute right-0 mt-2 w-40 bg-white text-teal-700 rounded shadow-lg z-10"
                 >
-                  <Link
-                    to="/trips"
-                    onClick={() => setIsOpen(false)}
-                    className="block px-4 py-2 hover:bg-teal-100"
-                  >
-                    My Trips
-                  </Link>
                   <button
                     onClick={() => {
                       logout();
@@ -110,7 +104,7 @@ export default function Navbar() {
             </div>
           )}
 
-          {user && (
+          <div className="md:hidden">
             <button
               onClick={toggleMenu}
               className="text-white focus:outline-none"
@@ -138,7 +132,7 @@ export default function Navbar() {
                 )}
               </svg>
             </button>
-          )}
+          </div>
         </div>
       </div>
 
@@ -152,6 +146,13 @@ export default function Navbar() {
             Home
           </Link>
           <Link
+            to="/trips"
+            onClick={toggleMenu}
+            className="block hover:text-gray-200"
+          >
+            Plan My Trip
+          </Link>
+          {/* <Link
             to="/create-itinerary"
             onClick={toggleMenu}
             className="block hover:text-gray-200"
@@ -171,7 +172,38 @@ export default function Navbar() {
             className="block hover:text-gray-200"
           >
             Explore
-          </Link>
+          </Link> */}
+
+          {!user ? (
+            <>
+              <Link
+                to="/login"
+                onClick={toggleMenu}
+                className="block hover:text-gray-200"
+              >
+                Login
+              </Link>
+              <Link
+                to="/register"
+                onClick={toggleMenu}
+                className="block hover:text-gray-200"
+              >
+                Register
+              </Link>
+            </>
+          ) : (
+            <>
+              <button
+                onClick={() => {
+                  logout();
+                  toggleMenu();
+                }}
+                className="block w-full text-left text-red-200 hover:text-red-400"
+              >
+                Logout
+              </button>
+            </>
+          )}
         </div>
       )}
     </nav>
