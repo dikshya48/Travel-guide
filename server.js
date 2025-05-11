@@ -1,4 +1,4 @@
-import express, { json, static as serveStatic } from "express";
+import express from "express";
 import dotenv from "dotenv";
 import { hash, compare } from "bcrypt";
 import cors from "cors";
@@ -14,7 +14,6 @@ dotenv.config();
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(serveStatic("public"));
 
 const port = process.env.PORT || 3000;
 
@@ -83,8 +82,9 @@ app.get("/api/check-auth", verifyToken, (req, res) => {
   res.json({ message: "Token is valid" });
 });
 
-// save trip data to db
-app.post("/api/trip", auth, async (req, res) => {
+app.use(auth);
+
+app.post("/api/trip", async (req, res) => {
   try {
     const trip = new Trip({ user: req.user.id, ...req.body });
     await trip.save();
@@ -95,10 +95,13 @@ app.post("/api/trip", auth, async (req, res) => {
   }
 });
 
-app.get("/api/trips", auth, async (req, res) => {
+app.get("/api/trips", async (req, res) => {
   try {
-    console.log(Trip);
-    const trips = await Trip.find();
+    const trips = await Trip.find({ user: req.user.id });
+    if (trips.length === 0) {
+      return res.status(404).json({ error: "No trips found for this user" });
+    }
+
     res.json(trips);
   } catch (error) {
     console.error(error);
@@ -108,12 +111,27 @@ app.get("/api/trips", auth, async (req, res) => {
 
 app.patch("/api/trip/:id", async (req, res) => {
   try {
-    let trip = await Trip.findOneAndUpdate(
-      { _id: req.params.id, user: req.user.id },
+    const { id } = req.params;
+    console.log(req);
+    if (req.body.startDate) {
+      req.body.startDate = new Date(req.body.startDate);
+    }
+    if (req.body.endDate) {
+      req.body.endDate = new Date(req.body.endDate);
+    }
+
+    const trip = await Trip.findOneAndUpdate(
+      { _id: id, user: req.user.id },
       req.body,
       { new: true }
     );
-    if (!trip) return res.status(404).json({ error: "Trip not found" });
+
+    if (!trip) {
+      return res
+        .status(404)
+        .json({ error: "Trip not found or you don't have permission" });
+    }
+
     res.json(trip);
   } catch (error) {
     console.error(error);
@@ -123,14 +141,37 @@ app.patch("/api/trip/:id", async (req, res) => {
 
 app.delete("/api/trip/:id", async (req, res) => {
   try {
+    const { id } = req.params;
+
     const trip = await Trip.findOneAndDelete({
-      _id: req.params.id,
+      _id: id,
       user: req.user.id,
     });
-    if (!trip) return res.status(404).json({ error: "Trip not found" });
-    res.json({ message: "Trip deleted" });
+
+    if (!trip) {
+      return res
+        .status(404)
+        .json({ error: "Trip not found or you don't have permission" });
+    }
+
+    res.json({ message: "Trip deleted successfully" });
   } catch (error) {
     console.error(error);
+    res.status(500).json({ error: "Server error" });
+  }
+});
+
+app.get("/api/find-buddies", async (req, res) => {
+  const { destination, interest } = req.query;
+  try {
+    const trips = await Trip.find({
+      $or: [
+        { destination: { $regex: destination, $options: "i" } },
+        { interest: { $regex: interest, $options: "i" } },
+      ],
+    });
+    res.json(trips);
+  } catch (error) {
     res.status(500).json({ error: "Server error" });
   }
 });
