@@ -23,7 +23,7 @@ export default function Home() {
             Create, update, and manage your travel plans.
           </p>
           <Link
-            to="/"
+            to="/trips"
             className="inline-block px-6 py-2 bg-blue-600 text-white rounded-full hover:bg-blue-700 transition"
           >
             Go to Itinerary
@@ -39,7 +39,7 @@ export default function Home() {
             Connect with people who share your travel interests.
           </p>
           <Link
-            to="/"
+            to="/trips"
             className="inline-block px-6 py-2 bg-green-600 text-white rounded-full hover:bg-green-700 transition"
           >
             Find Buddies
@@ -55,7 +55,7 @@ export default function Home() {
             Get inspired by top travel destinations around the world.
           </p>
           <Link
-            to="/"
+            to="/trips"
             className="inline-block px-6 py-2 bg-teal-600 text-white rounded-full hover:bg-teal-700 transition"
           >
             Start Exploring
